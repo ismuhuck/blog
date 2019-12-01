@@ -4,6 +4,7 @@
 ```
 npm install
 ```
+### 这是个人毕业论文项目 一个完整的论坛管理系统
 
 ### Compiles and hot-reloads for development
 ```
