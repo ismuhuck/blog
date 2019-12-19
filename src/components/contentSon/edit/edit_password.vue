@@ -24,6 +24,7 @@
 export default {};
 </script>
 <style lang="scss" scoped>
+
 .editpassword {
   width: 100%;
   background-color: #fff;

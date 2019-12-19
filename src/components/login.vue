@@ -1,6 +1,7 @@
 <template>
   <div class="register">
-    <div class="registerBox">
+    <div class="bgimg"></div>
+    <div class="loginBox">
       <h4>登录科技论坛</h4>
       <form name="register" id="registerForm">
         <div class="inputBox">
@@ -58,7 +59,19 @@ export default {
 .register {
   width: 1120px;
   margin: 0 auto;
-  .registerBox {
+  height: 60%;
+  .bgimg{
+    // 此处为了使背景永远在最后方，为此设置了层级 同时也改变了 header和footer的层级 
+    // 如果出现层级问题 请注意这里
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    background-image: url("../assets/bgimg.jpg");
+  }
+  .loginBox {
     text-align: center;
     width: 450px;
     margin: 0 auto;
@@ -66,6 +79,13 @@ export default {
     background-color: #fff;
     border-radius: 8px;
     border-top: 3px solid rgb(198, 55, 50);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 300px;
+    margin: 200px auto;
     h4 {
       height: 50px;
       border-bottom: 1px solid rgb(235, 235, 235);

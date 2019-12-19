@@ -158,6 +158,8 @@ export default {
 <style lang="scss" scoped>
 body {
   .header {
+    position: relative;
+    z-index: 1;
     width: 100%;
     background-image: linear-gradient(rgb(207, 71, 66), rgb(198, 55, 50));
     .headerbox {

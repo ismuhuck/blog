@@ -54,6 +54,8 @@ export default {};
   padding-top: 20px;
   margin-top: 20px;
   background-color: rgb(27, 28, 29);
+  position: relative;
+  z-index: 1;
   .footTopBox {
     width: 1120px;
     margin: 0 auto;

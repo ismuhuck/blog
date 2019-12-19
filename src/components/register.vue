@@ -1,5 +1,6 @@
 <template>
   <div class="register">
+    <div class="bgimg"></div>
     <div class="registerBox">
       <h4>注册科技论坛</h4>
       <form name="register" id="registerForm">
@@ -73,16 +74,35 @@ export default {
 </script>
 <style lang="scss" scoped>
 .register {
-  width: 1120px;
-  margin: 0 auto;
+  background-color: transparent;
+  height: 80%;
+  .bgimg{
+    // 此处为了使背景永远在最后方，为此设置了层级 同时也改变了 header和footer的层级 
+    // 如果出现层级问题 请注意这里
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    background-image: url("../assets/bgimg.jpg");
+  }
   .registerBox {
+    position: relative;
+    z-index: 1;
     text-align: center;
     width: 450px;
-    margin: 0 auto;
+    position: absolute;
     border: 1px solid rgb(235, 235, 235);
     background-color: #fff;
     border-radius: 8px;
     border-top: 3px solid rgb(198, 55, 50);
+    height: 400px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
     h4 {
       height: 50px;
       border-bottom: 1px solid rgb(235, 235, 235);
