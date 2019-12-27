@@ -59,7 +59,7 @@ export default {
 .register {
   width: 1120px;
   margin: 0 auto;
-  height: 60%;
+  height: 80%;
   .bgimg{
     // 此处为了使背景永远在最后方，为此设置了层级 同时也改变了 header和footer的层级 
     // 如果出现层级问题 请注意这里

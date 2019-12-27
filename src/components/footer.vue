@@ -37,7 +37,7 @@
     </div>
     <div class="footer_bottom">
         <p>禁止传播不良信息</p>
-        <p>本网站由<a href="">吴玉冰</a>设计和编码
+        <p>本网站由 <router-link to="/about">吴玉冰</router-link> 设计和编码
         <img src="../assets/xin.png" alt="" class="xin">
         </p>
     </div>
@@ -55,7 +55,7 @@ export default {};
   margin-top: 20px;
   background-color: rgb(27, 28, 29);
   position: relative;
-  z-index: 1;
+  // z-index: 1;
   .footTopBox {
     width: 1120px;
     margin: 0 auto;

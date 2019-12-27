@@ -15,7 +15,7 @@ import Editava from "../components/contentSon/edit/edit_ava.vue"
 import EditPassword from "../components/contentSon/edit/edit_password.vue"
 import Register from "../components/register.vue"
 import Login from "../components/login.vue"
-
+import About from "../components/aboutme.vue"
 Vue.use(VueRouter);
 const routes = [
   {
@@ -59,8 +59,10 @@ const routes = [
       {path:'edit_ava',component:Editava},
       {path:'edit_password',component:EditPassword}
     ]
+  },
+  {
+    path:'/about',component:About
   }
-
 ];
 
 const router = new VueRouter({

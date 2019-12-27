@@ -2,18 +2,44 @@
   <div class="header">
     <div class="headerbox">
       <div class="logo">
-        <img src="../assets/logo.jpg" alt="logo" />
+        <!-- <img src="../assets/logo.jpg" alt="logo" /> -->
       </div>
       <div class="loginBox">
         <div class="login" v-if="!isLogin">
           <span>
-            <router-link to="/login">登录</router-link>
+            <!-- <router-link to="/login">登录</router-link> -->
+            <a @click.prevent="login_dialog=true">登录</a>
           </span>
           <span>|</span>
           <span>
-            <router-link to="/register">注册</router-link>
+            <!-- <router-link to="/register">注册</router-link> -->
+            <a @click="register_dialog = true">注册</a>
           </span>
         </div>
+        <!-- 注册弹出框 -->
+        <el-dialog title="注册" width="450px" :visible.sync="register_dialog">
+          <el-form ref="form" :model="ruleForm" label-width="0" class="loginForm">
+              <el-form-item>
+                <el-input v-model="ruleForm.nickName" prefix-icon="el-icon-search"></el-input>
+              </el-form-item> 
+              <el-form-item>
+                <el-input v-model="ruleForm.email" prefix-icon="el-icon-search"></el-input>
+              </el-form-item> 
+              <el-form-item>
+                <el-input v-model="ruleForm.pass" prefix-icon="el-icon-search"></el-input>
+              </el-form-item> 
+              <el-form-item>
+                <el-input v-model="ruleForm.checkPass" prefix-icon="el-icon-search"></el-input>
+              </el-form-item> 
+              <el-form-item class="btns">
+                  <el-button type="primary" @click="submitForm">立即创建</el-button>
+                  <el-button>取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+        <!-- 登录弹出框 -->
+        <el-dialog title="登录" width="40%" :visible.sync="login_dialog"></el-dialog>
+        <!-- 用户登录之后的个人信息区域 -->
         <div
           class="loginTrue"
           v-if="isLogin"
@@ -65,25 +91,6 @@ import { mapMutations } from "vuex";
 // import { log } from 'util';
 export default {
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        if (this.ruleForm.checkPass !== "") {
-          this.$refs.ruleForm.validateField("checkPass");
-        }
-        callback();
-      }
-    };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
     return {
       ruleForm: {
         email: "",
@@ -91,24 +98,19 @@ export default {
         pass: "",
         checkPass: ""
       },
-      rules: {
-        pass: [{ required: true, validator: validatePass, trigger: "blur" }],
-        checkPass: [
-          { required: true, validator: validatePass2, trigger: "blur" }
-        ]
-      },
       userToken: "",
       isLogin: false,
       dropdown: false,
       nickName: "muhuck",
-      isopacity: "0.5"
+      isopacity: "0.5",
+      register_dialog:false,
+      login_dialog:false
     };
   },
   methods: {
     ...mapMutations(["changeLogin"]),
     submitForm(formName) {
       // console.log(formName);
-      
       let _this = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -156,10 +158,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+#app{
+  filter: blur(15px);
+   -webkit-filter:blur(15px)
+}
 body {
   .header {
     position: relative;
-    z-index: 1;
+    // z-index: 1;
     width: 100%;
     background-image: linear-gradient(rgb(207, 71, 66), rgb(198, 55, 50));
     .headerbox {
@@ -170,6 +176,7 @@ body {
       a {
         color: white;
         text-decoration: none;
+        cursor: pointer;
       }
       ul {
         float: right;
@@ -195,6 +202,13 @@ body {
         }
         span {
           padding: 5px 5px;
+        }
+        .loginForm{
+          padding: 0 20px;
+          .btns{
+            display: flex;
+            justify-content: flex-end;
+          }
         }
       }
       .loginTrue {
