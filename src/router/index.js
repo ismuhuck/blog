@@ -13,22 +13,12 @@ import EditPersonal from "../components/editpersonal.vue"
 import EditInfo from "../components/contentSon/edit/edit_info.vue"
 import Editava from "../components/contentSon/edit/edit_ava.vue"
 import EditPassword from "../components/contentSon/edit/edit_password.vue"
-import Register from "../components/register.vue"
-import Login from "../components/login.vue"
 import About from "../components/aboutme.vue"
 Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
     component: Home
-  },
-  {
-    path:"/register",
-    component:Register
-  },
-  {
-    path:"/login",
-    component:Login
   },
   {
     path:"/detalis",

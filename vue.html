@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue指令</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 从2.5版本开始 可以使用键盘事件对象中key属性的所有可能值作为修饰符 例如 左侧的shift e.key=ShiftLeft 因此监听此键的代码为 @keyup.shift-left ="" -->
+        <!-- exact修饰符 表示只有enter键被按下的触发 -->
+        <input type="text" v-model="obj.name" @keyup.enter.exact="keyUp">
+        <p>当前状态:{{statusFromId(status)}}</p>
+        <p>{{newValue}}</p>
+        <button @click="myclick">点击我</button>
+        <p>{{filter | format}}</p>
+    </div>
+    <script>
+        var vm = new Vue(
+            {
+                el:'#app',
+                data:{
+                    // 数据
+                    status: 2,
+                    value: 111,
+                    watchVal:'监听内容',
+                    obj:{
+                        name:"卡卡罗特",
+                        sex:"男"
+                    },
+                    filter:'123456'
+                },
+                methods: {
+                    // 方法
+                 statusFromId(id){
+                     const status = ({
+                         0: '睡觉',
+                         1: '吃饭',
+                         2: '打豆豆'
+                     })[id];
+                     return status || '未知状态'+ id
+                 }  ,
+                 myclick(){
+                     this.newValue+=2
+                     console.log("11111111")
+                     console.log(event)
+                 } ,
+                 keyUp(){
+                     alert("你按下了enter键")
+                 }
+                },
+                computed: {
+                    // 计算属性  只有值发生变化时会重新计算 否则只计算一次然后从缓存中取值
+                    newValue:{
+                        // 将计算属性改为一个带有set和get方法的对象  使之可以设置计算属性的值
+                        get(){
+                            return this.value*2
+                        },
+                        set(newVal){
+                            let oldValue = this.value
+                            let diffe = newVal - oldValue
+                            this.value+=newVal
+                        }
+                    }
+                },
+                watch: {
+                    // 监听器
+                    watchVal(newVal,oldVal){
+                        console.log("数据发生了变化"+newVal,"   "+oldVal)
+                    },
+                    obj:{
+                        handler(newVal,oldVal){
+                        console.log(newVal,"     "+oldVal)
+                    },
+                    // 当设置deep为true时  则表示深度监听  对象的属性发生变化时 也会监听到 否则只有整个对象被替换才会被监听到
+                    deep:true
+                }  
+                },
+                filters:{
+                    // 过滤器 第一个参数永远是管道符前面的值
+                    format(value){
+                        return "$"+value
+                    }
+                }
+            }
+        )
+    </script>
+</body>
+</html>

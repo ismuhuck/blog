@@ -43,10 +43,10 @@
       <div class="textInfo">
         <h4>他的全部动态</h4>
       </div>
-      <div class="personalBlog">
+      <div class="personalBlog" v-for="(item,i) in text" :key="i">
         <div class="blog">
           <div class="blogLeft">
-            <router-link to>华为帝瓦雷联名音响 <i class="icon iconfont icon-daohang"></i></router-link>
+            <router-link to v-html="item.content"><i class="icon iconfont icon-daohang"></i></router-link>
           </div>
           <div class="blogRight">
             <span class="icon iconfont icon-dianzan"></span>
@@ -65,11 +65,29 @@
   </div>
 </template>
 <script>
+import { log } from 'util';
 export default {
   data() {
     return {
-      comment: ""
+      comment: "",
+      text:''
     };
+  },
+  methods:{
+
+  },
+  created(){
+    var _this = this
+    _this.axios({
+      method:'get',
+      url:'getArticle',
+    }).then((res) => {
+      const {data:result} = res
+      _this.text=result
+    }).catch((err) => {
+      console.log(err)
+    });
+   
   }
 };
 </script>

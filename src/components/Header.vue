@@ -5,8 +5,8 @@
         <!-- <img src="../assets/logo.jpg" alt="logo" /> -->
       </div>
       <div class="loginBox">
-        <div class="login" v-if="!isLogin">
-          <span>
+        <div class="login" v-if="!userToken">
+          <span> 
             <!-- <router-link to="/login">登录</router-link> -->
             <a @click.prevent="login_dialog=true">登录</a>
           </span>
@@ -53,21 +53,16 @@
           </el-form>
         </el-dialog>
         <!-- 用户登录之后的个人信息区域 -->
-        <div
-          class="loginTrue"
-          v-if="isLogin"
-          @mouseenter="showDropdown"
-          @mouseleave="hideDropdown"
-        >
+        <div class="loginTrue" v-if="userToken" @mouseenter="showDropdown" @mouseleave="hideDropdown">
           <a href>
-            <img src="../assets/ata.jpg" alt />
-            <span :style="{opacity:isopacity}">{{ nickName }}</span>
+            <img :src="userInfo.avatar" alt />
+            <span :style="{opacity:isopacity}">{{ userInfo.nickName }}</span>
           </a>
           <div class="dropdown" v-if="dropdown">
             <div class="myBlog">
               <i class="icon iconfont icon-bokeyuan"></i>
               <span>
-                <router-link to>我的论坛</router-link>
+                <router-link to="/personal">我的论坛</router-link>
               </span>
             </div>
             <div class="editInfo">
@@ -79,7 +74,7 @@
             <div class="exit">
               <i class="icon iconfont icon-tuichu"></i>
               <span>
-                <router-link to>退出</router-link>
+                <a @click.prevent="exitLogin">退出</a> 
               </span>
             </div>
           </div>
@@ -139,7 +134,7 @@ export default {
       registerRule:{
          nickName: [
             { required: true, message: '请输入昵称', trigger: 'blur' },
-            { min: 2, max: 5, message: '昵称长度在 2 到 5 个字符', trigger: 'blur' }
+            { min: 2, max: 10, message: '昵称长度在 2 到 10 个字符', trigger: 'blur' }
           ],
           email:[
            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -165,42 +160,50 @@ export default {
           ],
       },
       userToken: "",
-      isLogin: false,
+      // isLogin: false,
       dropdown: false,
-      nickName: "muhuck",
       isopacity: "0.5",
       register_dialog:false,
-      login_dialog:false
+      login_dialog:false,
+      userInfo:{
+        nickName:'',
+        avatar:''
+      }
     };
   },
   methods: {
-    ...mapMutations(["changeLogin"]),
+    // ...mapMutations(["changeLogin"]),
+    // 登录请求
     submitForm() {
       // console.log(formName);
       let _this = this;
       this.$refs.login_form.validate(valid => {
         if (valid) {
-          console.log(valid);
           this.axios({
             method: "post",
-            url: "http://localhost:5000/api/login",
+            url: "login",
             data: {
               email: this.loginForm.email,
               password: this.loginForm.password
             },
-            headers: {
-              Anthorization: ""
-            }
           }).then(res => {
-            _this.userToken = "Bearer" + res.data.token;
+            // 解构出data对象  并赋值给result
+            const {data:result} = res
+            if(result.code===0){
+            let userToken =''
+            userToken = "Bearer " + res.data.token;
+            localStorage.setItem('Authorization',userToken)
             // console.log(this.userToken); //获取到的token
-            _this.changeLogin({ Authorization: this.userToken });
-            _this.isLogin = true
-            // this.$router.push("/");
-            // $('#exampleModal2').modal('hide')
-            // alert("登陆成功");
+            // _this.changeLogin({ Authorization: this.userToken });
+            // _this.isLogin = true
+            this.getToken(this)
             this.$message.success('登录成功')
             this.login_dialog=false
+            }
+            else{
+              this.$message.error('邮箱或密码错误，登录失败');
+            }
+            
           }).catch(error => {
             this.$message.error('邮箱或密码错误，登录失败');
             console.log(error.response.data);
@@ -212,6 +215,7 @@ export default {
         }
       });
     },
+    // 注册请求
     register(){
         // let _this = this;
       this.$refs.register_form.validate(valid => {
@@ -219,29 +223,27 @@ export default {
           console.log(valid);
           this.axios({
             method: "post",
-            url: "http://localhost:5000/api/register",
+            url: "register",
             data: {
               email: this.registerForm.email,
               nickName:this.registerForm.nickName,
               password: this.registerForm.password
             },
-            // headers: {
-            //   Anthorization: ""
-            // }
           }).then(res => {
             // _this.userToken = "Bearer" + res.data.token;
             // // console.log(this.userToken); //获取到的token
             // _this.changeLogin({ Authorization: this.userToken });
             // _this.isLogin = true
             const {data:result} = res
-            if(result.code==="1"){
+            if(result.code===2){
                 this.$message.error('该邮箱已经注册！请登录');
             }
-            else if(result.code==="2"){
+            else if(result.code===3){
                 this.$message.error('昵称已存在，请更换昵称')
             }
             else{
                 this.$message.success('注册成功')
+                this.register_dialog="false"
             }
           }).catch(error => {
             console.log(error)
@@ -266,7 +268,40 @@ export default {
     hideDropdown() {
       this.dropdown = false;
       this.isopacity = "0.5";
+    },
+          // 获取用户信息
+    getToken(_this){
+      let token = localStorage.getItem('Authorization')
+      if(token){
+        _this.userToken = token
+        // console.log(token)
+        _this.axios({
+          method: "get",
+          url: "getUser",
+        }).then(res =>{
+          const {data:result} = res
+          _this.userInfo.nickName = result.nickName
+          _this.userInfo.avatar = result.avatar
+        })
+        .catch(err =>{
+          console.log(err)
+        })
+      }else{
+        _this.userToken = token
+      }
+    },
+    // 退出登录
+    exitLogin(){
+      localStorage.removeItem('Authorization')
+      var _this = this
+      _this.getToken(_this)
     }
+  },
+  mounted(){
+    var _this = this
+    window.onload = function(){
+    _this.getToken(_this)
+  }
   }
 };
 </script>

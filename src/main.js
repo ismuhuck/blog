@@ -19,21 +19,19 @@ import "./assets/form/iconfont.css"
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
+// 配置全局请求根路径
+axios.defaults.baseURL = 'http://localhost:5000/api/'
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount("#app");
+// axios 请求拦截器 为每次请求添加token
 axios.interceptors.request.use(
   config =>{
-    if(config.url==='/api/login' || config.url ==='/api/register'){
-      console.log('');
-      
-    }
-    else{
-      if(localStorage.getItem('Authorization')){
-        config.headers.Authorizatior = localStorage.getItem('Authorization');
-      }
+    let token = localStorage.getItem('Authorization')
+    if(token){
+      config.headers.Authorization=token
     }
     return config
   },
@@ -41,17 +39,17 @@ axios.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-router.beforeEach((to,from, next) =>{
-  if(to.path === '/'){
-    next()
-  }else{
-    let token = localStorage.getItem('Authorization')
-    console.log('本地存储的token'+token);
-    if(token === 'null' || token ===''){
-      next('/')
-    }else{
-      next()
-    }
+// router.beforeEach((to,from, next) =>{
+//   if(to.path === '/'){
+//     next()
+//   }else{
+//     let token = localStorage.getItem('Authorization')
+//     // console.log('本地存储的token'+token);
+//     if(token === 'null' || token ===''){
+//       next('/')
+//     }else{
+//       next()
+//     }
     
-  }
-})
+//   }
+// })
