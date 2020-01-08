@@ -58,7 +58,7 @@ export default {
           }
         ],
         qq:[
-           { required: true, message: "qq不能为空", trigger: "blur" },
+           { required: false,  trigger: "blur" },
           {min:6,max:10,message:"qq长度应为6-10位",trigger:"blur"},
           {type:'number',message:"qq必须为数字类型",trigger:['blue','change']}
         ] 
@@ -103,7 +103,25 @@ export default {
         }
       });
     }
-  }
+  },
+  mounted(){
+      this.axios({
+        method:'get',
+        url:'getUser'
+      })
+      .then(res => {
+        const {data:result} = res
+        this.update.email = result.email
+        this.update.nickName = result.nickName
+        this.update.address = result.address
+        this.update.company = result.company
+        this.update.qq = result.qq
+        // console.log(result) 
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
 };
 </script>
 <style lang="scss" scoped>

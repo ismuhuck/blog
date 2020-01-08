@@ -10,7 +10,7 @@
       <p>请上传正常的人物头像，真人或卡通皆可。</p>
       <p>上传闪烁、奇异、违法、色情头像，情节严重者将会被禁言处理。</p>
     </div>
-    <form action>
+    <!-- <form action>
       <div class="onloadAta">
         <label for="avatar">请上传图片：</label>
         <input type="file" name="avatar" id="avatar" />
@@ -18,21 +18,69 @@
     </form>
     <div class="btnBox">
       <button type="submit" class="onloadBtn" @click.prevent="uploadAva">上传头像</button>
+    </div> -->
+    <div class="avataText">
+      点击下方原始头像上传新头像
     </div>
+    <el-upload
+  class="avatar-uploader"
+  action="http://localhost:5000/api/uploadAva"
+  :headers="token"
+  :show-file-list="false"
+  :on-success="handleAvatarSuccess"
+  :before-upload="beforeAvatarUpload"
+  name="avatar"
+  >
+  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+</el-upload>
   </div>
 </template>
 <script>
 export default {
-  data() {
-    return {
-      
+   data() {
+      return {
+        imageUrl: '',
+        token:{
+          Authorization:localStorage.getItem('Authorization')
+        }
+      };
+    },
+    methods: {
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+        // console.log(res)
+        if(res.code === 0){
+          this.$message.success('头像上传成功')
+        }
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      }
+    },
+    mounted(){
+      this.axios({
+        method:'get',
+        url:'getUser'
+      })
+      .then(res => {
+        const {data:result} = res
+        this.imageUrl = result.avatar
+        // console.log(result) 
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
-  },
-  methods:{
-    uploadAva(){
-      
-    }
-  }
 };
 </script>
 <style lang="scss" scoped>
@@ -43,6 +91,35 @@ export default {
   border-radius: 8px;
   padding: 20px;
   color: rgb(100, 100, 100);
+  .avataText {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+    margin-top: 20px;
+  }
   h4 {
     font-size: 16px;
     padding: 5px 20px;
