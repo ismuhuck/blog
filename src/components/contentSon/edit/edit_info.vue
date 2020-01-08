@@ -3,18 +3,30 @@
     <h4>
       <i class="icon iconfont icon-bi"></i> 修改个人信息
     </h4>
-    <el-form :model="update" ref="update_form" :rules="updateRule" label-width="0" class="updateForm">
+    <el-form :model="update" ref="updateNickname_form" :rules="updateRule" label-width="0" class="updateForm">
       <el-form-item prop="nickName">
         <el-input v-model="update.nickName" placeholder="请输入昵称"></el-input>
       </el-form-item>
-      <el-form-item prop="email">
-        <el-input v-model="update.email" type="email" placeholder="请输入邮箱"></el-input>
+      <el-form-item class="btns">
+        <el-button  @click="updateNickname" id="updateBtn">确认修改</el-button>
+        <!-- <el-button type="primary" @click="setupdate">重置</el-button> -->
       </el-form-item>
+    </el-form>
+    <el-form :model="update" ref="updateEmail_form" :rules="updateRule" label-width="0" class="updateForm">
+      <el-form-item prop="email">
+        <el-input v-model="update.email" placeholder="请输入邮箱"></el-input>
+      </el-form-item>
+      <el-form-item class="btns">
+        <el-button  @click="updateEmail" id="updateBtn">确认修改</el-button>
+        <!-- <el-button type="primary" @click="setupdate">重置</el-button> -->
+      </el-form-item>
+    </el-form>
+    <el-form :model="update" ref="update_form" :rules="updateRule" label-width="0" class="updateForm">
       <el-form-item prop="address">
         <el-input v-model="update.address" type="text" placeholder="家庭地址"></el-input>
       </el-form-item>
       <el-form-item prop="qq">
-        <el-input v-model="update.qq" type="text" placeholder="QQ号"></el-input>
+        <el-input v-model="update.qq" placeholder="QQ号" auto-complete="off"></el-input>
       </el-form-item>
       <el-form-item prop="company">
         <el-input v-model="update.company" type="text" placeholder="公司地址"></el-input>
@@ -58,9 +70,9 @@ export default {
           }
         ],
         qq:[
-           { required: false,  trigger: "blur" },
-          {min:6,max:10,message:"qq长度应为6-10位",trigger:"blur"},
-          {type:'number',message:"qq必须为数字类型",trigger:['blue','change']}
+          // {type:'number',message:"qq必须为数字类型",trigger:['blue','change']},
+          { required: false,  trigger: "blur" },
+          {min:6,max:10,message:"qq长度应为6-10位",trigger:"blur"}
         ] 
       }
     };
@@ -73,8 +85,6 @@ export default {
             method: "post",
             url: "info",
             data: {
-              email: this.update.email,
-              nickName: this.update.nickName,
               address: this.update.address,
               company: this.update.company,
               qq: this.update.qq,
@@ -87,11 +97,63 @@ export default {
               if (result.code === 1) {
                 return this.$message.error("修改失败，请重试");
               }
-              if (result.code === 2) {
-                return this.$message.warning("该邮箱已经存在，请重新输入邮箱");
+              this.$message.success("修改成功");
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }else{
+          this.$message.error('表单信息输入有误，请重新输入')
+        }
+      });
+    },
+    updateNickname(){
+      this.$refs.updateNickname_form.validate(valid => {
+        if (valid) {
+          this.axios({
+            method: "post",
+            url: "nickName",
+            data: {             
+               nickName: this.update.nickName,
+            }
+          })
+            .then(res => {
+              const { data: result } = res;
+              console.log(result);
+              if (result.code === 1) {
+                return this.$message.error("修改失败，请重试");
               }
               if (result.code === 3) {
                 return this.$message.warning("昵称已存在，请重新输入昵称");
+              }
+              this.$message.success("修改成功");
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }else{
+          this.$message.error('表单信息输入有误，请重新输入')
+        }
+      });
+    },
+      updateEmail(){
+      this.$refs.updateEmail_form.validate(valid => {
+        if (valid) {
+          this.axios({
+            method: "post",
+            url: "email",
+            data: {             
+               email: this.update.email,
+            }
+          })
+            .then(res => {
+              const { data: result } = res;
+              console.log(result);
+              if (result.code === 1) {
+                return this.$message.error("修改失败，请重试");
+              }
+              if (result.code === 2) {
+                return this.$message.warning("邮箱存在，请重新输入邮箱");
               }
               this.$message.success("修改成功");
             })
@@ -116,6 +178,7 @@ export default {
         this.update.address = result.address
         this.update.company = result.company
         this.update.qq = result.qq
+        this.update.qianming = result.qianming
         // console.log(result) 
       })
       .catch(err => {
