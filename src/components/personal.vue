@@ -46,7 +46,7 @@
       <div class="personalBlog" v-for="(item,i) in text" :key="i">
         <div class="blog">
           <div class="blogLeft">
-            <router-link to v-html="item.content"><i class="icon iconfont icon-daohang"></i></router-link>
+            <router-link to>{{item.blogTitle}}<i class="icon iconfont icon-daohang"></i></router-link>
           </div>
           <div class="blogRight">
             <span class="icon iconfont icon-dianzan"></span>
@@ -76,13 +76,19 @@ export default {
   methods:{
 
   },
-  created(){
+  mounted(){
+    let token = localStorage.getItem('Authorization')
     var _this = this
+    
     _this.axios({
       method:'get',
       url:'getArticle',
+      // headers:{
+      //     Authorization:token
+      //   }
     }).then((res) => {
       const {data:result} = res
+      console.log(result)
       _this.text=result
     }).catch((err) => {
       console.log(err)

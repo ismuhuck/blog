@@ -297,11 +297,9 @@ export default {
       _this.getToken(_this)
     }
   },
-  mounted(){
+  created(){
     var _this = this
-    window.onload = function(){
     _this.getToken(_this)
-  }
   }
 };
 </script>

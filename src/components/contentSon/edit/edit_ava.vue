@@ -12,17 +12,28 @@
     </div>
     <form action>
       <div class="onloadAta">
-        <label for="avater">请上传图片：</label>
-        <input type="file" name="avater" id="avater" />
+        <label for="avatar">请上传图片：</label>
+        <input type="file" name="avatar" id="avatar" />
       </div>
     </form>
     <div class="btnBox">
-      <button type="submit" class="onloadBtn">上传头像</button>
+      <button type="submit" class="onloadBtn" @click.prevent="uploadAva">上传头像</button>
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      
+    }
+  },
+  methods:{
+    uploadAva(){
+      
+    }
+  }
+};
 </script>
 <style lang="scss" scoped>
 .edit_ata {
@@ -50,7 +61,7 @@ export default {};
     padding: 20px 0;
     border: 1px solid rgb(235, 235, 235);
     border-radius: 8px;
-    #avater{
+    #avatar{
         
     }
   }

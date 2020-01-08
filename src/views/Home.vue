@@ -100,7 +100,7 @@ export default {
       this.axios(
         {
           method: "get",
-            url: "http://localhost:5000/api/",
+          url: "http://localhost:5000/api/",
         }
       ).then(res => {
         console.log(res);

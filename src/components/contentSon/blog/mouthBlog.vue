@@ -1,286 +1,10 @@
 <template>
   <div>
-    <div class="contentList">
+    <div class="contentList" v-for="(item,i) in summary" :key="i">
       <img src="../../../assets/ata.jpg" alt class="ata" />
       <span class="span1">分享</span>
       <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-    <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-    <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-    <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-    <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-    <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-    <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-    <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
-        <span class="span3">
-          <span class="span4">sss</span>
-          <span class="span6">|</span>
-          <span class="span5">3小时前</span>
-        </span>
-      </a>
-    </div>
-     <div class="contentList">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
-      <span class="span1">分享</span>
-      <a href>
-        <span class="span2">这个是月排行页面</span>
+        <span class="span2">{{item.blogTitle}}月排行</span>
         <span class="span3">
           <span class="span4">sss</span>
           <span class="span6">|</span>
@@ -293,7 +17,27 @@
 </template>
 <script>
 // import ''
-export default {};
+export default {
+  data() {
+    return {
+      summary:''
+    }
+  },
+  created(){
+    this.axios({
+      method:'get',
+      url:'mouth'
+    })
+    .then((res) =>{
+      const {data:result} = res
+      this.summary = result.article
+      console.log(result)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+};
 </script>
 <style lang="scss" scoped>
 .contentList {
