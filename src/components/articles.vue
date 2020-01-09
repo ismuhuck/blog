@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="footer">
-          <button class="Btn btn1" @click="focus">关注</button>
+          <button class="Btn btn1" @click="focus">{{focu}}</button>
           <button class="Btn btn2">私信</button>
         </div>
       </div>
@@ -88,7 +88,9 @@
 export default {
   data() {
     return {
+      id:'',
 	  comment: "",
+    focu:'关注',
 	  flag:false,
       user:{
         nickName:'',
@@ -114,16 +116,42 @@ export default {
 		}
 		this.axios({
 			method:'post',
-			url:'focus',
+      url:'focus',
 		})
 		.then(res => {
-			const {data:result} = res
-			console.log(result)
+      const {data:result} = res
+      console.log(result)
+      this.likeme()
+			// if(result.code === 2){
+      //   this.focu="已关注"
+      // }
+      // if(result.code === 3){
+      //   this.focu="关注"
+      // }
+
 		})
 		.catch(err => {
 			console.log(err)
 		})
-	},
+  },
+  // 粉丝
+  likeme(){
+    this.axios({
+      method:'post',
+      url:'likeme',
+      data:{
+        // 当前文章所在坛主 id
+        _id:this.id
+      }
+    })
+    .then(res => {
+      const {data:result} = res
+      console.log(result)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
 
     // 点赞
     like(){
@@ -202,6 +230,7 @@ export default {
         this.user.nickName=result.user.nickName
         this.user.avatar = result.user.avatar
         this.user.qianming = result.user.qianming
+        this.id = result.user._id
         this.article.title = result.article.blogTitle
         this.article.content = result.article.content
 		this.commentInfo = result.article.comment

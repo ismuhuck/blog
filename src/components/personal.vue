@@ -33,10 +33,6 @@
             <div class="value">10</div>
           </div>
         </div>
-        <div class="footer">
-          <button class="Btn btn1">关注</button>
-          <button class="Btn btn2">私信</button>
-        </div>
       </div>
     </div>
     <div class="perRight">
@@ -153,26 +149,6 @@ export default {
         justify-content: space-between;
         padding: 20px 10px;
         border-bottom: 1px solid rgb(235, 235, 235);
-      }
-      .footer {
-        padding: 20px 10px;
-        display: flex;
-        justify-content: center;
-        .Btn {
-          border: 1px solid rgb(198, 55, 50);
-          background-color: white;
-          width: 50%;
-          padding: 5px 0;
-        }
-        .btn1 {
-          border-right: none;
-          border-top-left-radius: 3px;
-          border-bottom-left-radius: 3px;
-        }
-        .btn2 {
-          border-bottom-right-radius: 3px;
-          border-top-right-radius: 3px;
-        }
       }
     }
   }
