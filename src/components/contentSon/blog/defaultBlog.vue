@@ -1,16 +1,18 @@
 <template>
   <div>
     <div class="contentList" v-for="(item,i) in summary" :key="i">
-      <img src="../../../assets/ata.jpg" alt class="ata" />
+      <img :src="item.userAva" alt class="ata" />
       <span class="span1">分享</span>
-      <a href>
+      <!-- 通过属性绑定 query进行动态路由传参 -->
+      <router-link :to="{path:'/articles',query:{articleId:item._id}}">
         <span class="span2">{{item.blogTitle}}</span>
         <span class="span3">
-          <span class="span4">sss</span>
+          <span class="span4">{{item.userNickname}}发表于</span>
           <span class="span6">|</span>
           <span class="span5">3小时前</span>
         </span>
-      </a>
+      </router-link>
+      
     </div>
   </div>
 </template>
@@ -21,6 +23,8 @@ export default {
     return {
       summary:''
     }
+  },
+  methods:{
   },
   created(){
     this.axios({
@@ -76,5 +80,6 @@ export default {
       margin: 0 10px;
     }
   }
+ 
 }
 </style>

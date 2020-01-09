@@ -5,13 +5,13 @@
         <div class="infoHeader">
           <div class="nick">
             <p>
-              <a href>二哈</a>
+              <a href>{{user.nickName}}</a>
             </p>
-            <p>这里是个人签名</p>
+            <p>{{user.qianming}}</p>
           </div>
           <div class="ata">
             <a href>
-              <img src="../assets/ata.jpg" alt />
+              <img :src="user.avatar" alt />
             </a>
           </div>
         </div>
@@ -34,30 +34,39 @@
           </div>
         </div>
         <div class="footer">
-          <button class="Btn btn1">关注</button>
+          <button class="Btn btn1" @click="focus">关注</button>
           <button class="Btn btn2">私信</button>
         </div>
       </div>
     </div>
     <div class="perRight">
       <div class="textInfo">
-        <h4>这里是标题</h4>
+        <h4>{{article.title}}</h4>
+        <div class="content" v-html="article.content">
+        </div>
+      </div>
+      <div class="like">
+         <i class="icon iconfont icon-dianzan" @click="like" :class="{red:flag}"></i>
+         <span>当前有人{{count}}点赞</span>
+         <div class="dianzanAva" v-for="(item,i) in dianzan" :key="i">
+           <img :src="item.avatar" alt="">
+         </div>
       </div>
       <div class="discuss">
         <span>评论区</span>
       </div>
-      <div class="commentList">
+      <div class="commentList"  v-for="(item, index) in commentInfo" :key="index">
         <div class="comment">
           <div class="avater">
             <router-link to="/personal">
-              <img src="../assets/ata.jpg" alt="头像" />
+              <img :src="item.avatar" alt="头像" />
             </router-link>
           </div>
           <div class="content">
             <h4>
-              <router-link to="/personal">二哈</router-link>
+              <router-link to="/personal">{{item.nickName}}</router-link>
             </h4>
-            <div class="contentBody">这篇文章写得很有内涵</div>
+            <div class="contentBody">{{item.comment}}</div>
             <div class="contentFooter"></div>
           </div>
         </div>
@@ -69,7 +78,7 @@
           <textarea name="commentArea" cols="30" rows="10" class="comInput" v-model="comment"></textarea>
         </div>
         <div class="newbottom">
-          <button class="commentBtn">评论</button>
+          <button class="commentBtn" @click="commentText">评论</button>
         </div>
       </div>
     </div>
@@ -79,9 +88,137 @@
 export default {
   data() {
     return {
-      comment: ""
+	  comment: "",
+	  flag:false,
+      user:{
+        nickName:'',
+        avatar:'',
+        qianming:''
+      },
+      article:{
+        title:'',
+        content:''
+      },
+	  commentInfo:[],
+	  dianzan:[],
+	  count:0,
+	  token:localStorage.getItem('Authorization')
     };
-  }
+  },
+  methods:{
+
+	// 关注
+	focus(){
+		if(!this.token){
+			return this.$message.error('你还未登录请登录')
+		}
+		this.axios({
+			method:'post',
+			url:'focus',
+		})
+		.then(res => {
+			const {data:result} = res
+			console.log(result)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+	},
+
+    // 点赞
+    like(){
+		if(!this.token){
+			return this.$message.error('您还没有登录，请登录后点赞')
+		}
+		this.axios({
+			method:'post',
+			url:'like',
+			data:{
+				articleId:this.$route.query.articleId
+			}
+		})
+		.then(res => {
+			const {data:result} = res
+			console.log(result)
+			this.dianzan = result.articleInfo.like
+			this.count = this.dianzan.length
+			if(result.code===2){
+				return this.$message.success('点赞成功')
+			}
+			if(result.code === 3){
+				return this.$message.success('取消点赞')
+			}
+			this.flag = !this.flag
+		})
+		.catch(err =>{
+			console.log(err)
+			this.$message.error('服务器错误，请重试')
+		})
+		
+	},
+
+    // 发表评论
+    commentText(){
+      let token = localStorage.getItem('Authorization')
+      if(!token){
+        return this.$message.error('您尚未登录，请登录后评论')
+      }
+      if(this.comment.trim()===''){
+        return this.$message.error('不能发表空评论')
+      }
+      this.axios({
+        method:'post',
+        url:'commentText',
+        data:{
+          comment:this.comment,
+          articleId:this.$route.query.articleId
+        }
+      })
+      .then(res => {
+        const {data:result} = res
+        if(result.code===0){
+          this.$message.success('评论成功')
+          this.comment=""
+          this.getArticle()
+        }
+      })
+      .catch(err => {
+          return this.$message.error('服务器出错，请稍后重试')
+      })
+    },
+    // 获取文章详情
+    getArticle(){
+       this.axios({
+      method:'get',
+      url:'thisArticle',
+      params: {
+      articleId:this.$route.query.articleId
+    }
+    })
+    .then( res => {
+	  const {data:result} = res
+	  console.log(result)
+      if(result.code===0){
+        this.user.nickName=result.user.nickName
+        this.user.avatar = result.user.avatar
+        this.user.qianming = result.user.qianming
+        this.article.title = result.article.blogTitle
+        this.article.content = result.article.content
+		this.commentInfo = result.article.comment
+		this.count = result.article.like.length
+		this.dianzan = result.article.like
+        return this.$message.success('数据请求成功')
+      }
+      return this.$message.error('服务器错误，数据请求失败')
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    }
+  },
+  created() {
+    this.getArticle()
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -164,6 +301,43 @@ export default {
         font-size: 20px;
         font-weight: 400;
         border-bottom: 1px solid rgb(235, 235, 235);
+      }
+    }
+    .like{
+		width: 785px;
+      margin: 20px 0 20px 0;
+      background-color: #fff;
+      padding: 20px;
+      i{
+        font-size: 18px;
+        color: rgb(100, 100, 100);
+        cursor: pointer;
+      }
+	  i.red{
+			color: rgb(198, 55, 50)
+		}
+      span{
+        margin-left: 20px;
+        font-size: 14px;
+        color: rgb(100, 100, 100)
+      }
+      .dianzanAva{
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 10px;
+        border:1px solid rgb(100, 100, 100);
+        vertical-align: middle;
+        position: relative;
+        img{
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          position: absolute;
+          top: 2px;
+          left: 2px;
+        }
       }
     }
     .discuss {
@@ -255,6 +429,10 @@ export default {
           border-radius: 8px;
           border: 1px solid rgb(235, 235, 235);
           color: rgb(100, 100, 100);
+        }
+        .comInput:focus{
+          outline: none;
+          border: 1px solid rgb(198, 55, 50)
         }
       }
       .newbottom {

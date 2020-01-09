@@ -5,20 +5,20 @@
         <div class="infoHeader">
           <div class="nick">
             <p>
-              <a href>二哈</a>
+              <a href>{{user.nickName}}</a>
             </p>
-            <p>这里是个人签名</p>
+            <p>{{user.qianming}}</p>
           </div>
           <div class="ata">
             <a href>
-              <img src="../assets/ata.jpg" alt />
+              <img :src="user.avatar" alt />
             </a>
           </div>
         </div>
         <div class="infoBody">
           <div class="infiLabel">
             <div class="label">文章</div>
-            <div class="value">10</div>
+            <div class="value">{{text.length}}</div>
           </div>
           <div class="infiLabel">
             <div class="label">粉丝</div>
@@ -41,7 +41,7 @@
     </div>
     <div class="perRight">
       <div class="textInfo">
-        <h4>他的全部动态</h4>
+        <h4>我的主页</h4>
       </div>
       <div class="personalBlog" v-for="(item,i) in text" :key="i">
         <div class="blog">
@@ -49,16 +49,16 @@
             <router-link to>{{item.blogTitle}}<i class="icon iconfont icon-daohang"></i></router-link>
           </div>
           <div class="blogRight">
-            <span class="icon iconfont icon-dianzan"></span>
-            <span class="icon iconfont icon-xinxi"></span>
+            <span class="icon iconfont icon-dianzan"><span>{{item.like.length}}</span> </span>
+            <span class="icon iconfont icon-xinxi"><span>{{item.comment.length}}</span> </span>
           </div>
         </div>
         <div class="blogBottom">
             <span>创建于一个月前</span>
             <span>|</span>
-            <span>评论数</span>
+            <span>评论数：{{item.comment.length}}</span>
             <span>|</span>
-            <span>阅读数</span>
+            <span>点赞数：{{item.like.length}}</span>
         </div>
       </div>
     </div>
@@ -70,17 +70,27 @@ export default {
   data() {
     return {
       comment: "",
-      text:''
+      text:'',
+      token:localStorage.getItem('Authorization'),
+      user:{}
     };
   },
   methods:{
-
-  },
-  mounted(){
-    let token = localStorage.getItem('Authorization')
-    var _this = this
-    
-    _this.axios({
+    getUser(){
+      this.axios({
+        method:'get',
+        url:'getUser'
+      })
+      .then( res => {
+        const {data:result} = res
+        this.user = result
+      })
+      .catch( err => {
+        console.log(err)
+      })
+    },
+    getArticle(){
+      this.axios({
       method:'get',
       url:'getArticle',
       // headers:{
@@ -89,11 +99,15 @@ export default {
     }).then((res) => {
       const {data:result} = res
       console.log(result)
-      _this.text=result
+      this.text=result
     }).catch((err) => {
       console.log(err)
     });
-   
+    }
+  },
+  mounted(){
+    this.getUser()
+    this.getArticle()
   }
 };
 </script>
@@ -200,9 +214,15 @@ export default {
         .blogRight{
             span{
                 padding: 5px 10px;
-                border: 1px solid rgb(235, 235, 235);
+                border: 1px solid ;
                 border-radius: 5px;
                 margin-right: 10px;
+                color: rgb(27,161,252);
+                span{
+                  margin-left: 10px;
+                  margin-right: 0;
+                  border: none;
+                }
             }
         }
       }

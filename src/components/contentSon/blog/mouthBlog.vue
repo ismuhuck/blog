@@ -3,14 +3,14 @@
     <div class="contentList" v-for="(item,i) in summary" :key="i">
       <img src="../../../assets/ata.jpg" alt class="ata" />
       <span class="span1">分享</span>
-      <a href>
+      <router-link to="/articles">
         <span class="span2">{{item.blogTitle}}月排行</span>
         <span class="span3">
           <span class="span4">sss</span>
           <span class="span6">|</span>
           <span class="span5">3小时前</span>
         </span>
-      </a>
+      </router-link>
     </div>
 
   </div>

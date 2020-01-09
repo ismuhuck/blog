@@ -243,7 +243,7 @@ export default {
             }
             else{
                 this.$message.success('注册成功')
-                this.register_dialog="false"
+                this.register_dialog=false
             }
           }).catch(error => {
             console.log(error)

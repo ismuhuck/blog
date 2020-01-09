@@ -8,7 +8,6 @@
           <router-link to="/forum/week">周榜</router-link>
           <router-link to="/forum/mouth">月榜</router-link>
           <router-link to="/forum/year">年榜</router-link>
-          <router-link to="/articles">详情页路由未分配</router-link>
         </h4>
         <router-view></router-view>
       </div>
@@ -87,6 +86,9 @@ export default {
         font-size: 15px;
         text-decoration: none;
       }
+      .router-link-active{
+        color: rgb(207, 71, 66);
+     }
     }
   }
   .rightBox {
