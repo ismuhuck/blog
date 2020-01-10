@@ -39,18 +39,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
-
-// router.beforeEach((to,from, next) =>{
-//   if(to.path === '/'){
-//     next()
-//   }else{
-//     let token = localStorage.getItem('Authorization')
-//     // console.log('本地存储的token'+token);
-//     if(token === 'null' || token ===''){
-//       next('/')
-//     }else{
-//       next()
-//     }
-    
-//   }
-// })

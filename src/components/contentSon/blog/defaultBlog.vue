@@ -9,7 +9,7 @@
         <span class="span3">
           <span class="span4">{{item.userNickname}}发表于</span>
           <span class="span6">|</span>
-          <span class="span5">3小时前</span>
+          <span class="span5">{{}}</span>
         </span>
       </router-link>
       
@@ -34,7 +34,6 @@ export default {
     .then((res) =>{
       const {data:result} = res
       this.summary = result.article
-      console.log(result)
     })
     .catch(err =>{
       console.log(err)

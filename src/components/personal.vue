@@ -22,17 +22,21 @@
           </div>
           <div class="infiLabel">
             <div class="label">粉丝</div>
-            <div class="value">10</div>
+            <div class="value">{{likeme}}</div>
           </div>
           <div class="infiLabel">
-            <div class="label">喜欢</div>
-            <div class="value">10</div>
+            <div class="label">关注</div>
+            <div class="value">{{focus}}</div>
           </div>
           <div class="infiLabel">
             <div class="label">收藏</div>
-            <div class="value">10</div>
+            <div class="value">{{shoucang}}</div>
           </div>
         </div>
+      </div>
+
+      <div class="btnText">
+        <router-link to="/editor" class="btn">编写文章</router-link>
       </div>
     </div>
     <div class="perRight">
@@ -42,11 +46,12 @@
       <div class="personalBlog" v-for="(item,i) in text" :key="i">
         <div class="blog">
           <div class="blogLeft">
-            <router-link to>{{item.blogTitle}}<i class="icon iconfont icon-daohang"></i></router-link>
+            <router-link :to='{path:"/articlesInfo",query: { articleId: item._id }}'>{{item.blogTitle}}<i class="icon iconfont icon-daohang"></i></router-link>
           </div>
           <div class="blogRight">
             <span class="icon iconfont icon-dianzan"><span>{{item.like.length}}</span> </span>
             <span class="icon iconfont icon-xinxi"><span>{{item.comment.length}}</span> </span>
+            <span class="icon iconfont icon-set" @click="deleted(item._id)"></span>
           </div>
         </div>
         <div class="blogBottom">
@@ -68,10 +73,45 @@ export default {
       comment: "",
       text:'',
       token:localStorage.getItem('Authorization'),
-      user:{}
+      user:{},
+      likeme:0,
+      focus:0,
+      shoucang:0
     };
   },
   methods:{
+    // 删除文章方法
+
+    deleted(_id){
+        this.$confirm('此操作将删除该文章, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+           
+          this.axios.post('deleted',{
+          _id:_id
+        })
+        .then(res => {
+          const {data:result} = res
+          this.getArticle()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+       
+    },
+
     getUser(){
       this.axios({
         method:'get',
@@ -80,6 +120,9 @@ export default {
       .then( res => {
         const {data:result} = res
         this.user = result
+        this.focus = this.user.focus.length
+        this.likeme = this.user.likeme.length
+        this.shoucang = this.user.collecting.length
       })
       .catch( err => {
         console.log(err)
@@ -94,7 +137,6 @@ export default {
       //   }
     }).then((res) => {
       const {data:result} = res
-      console.log(result)
       this.text=result
     }).catch((err) => {
       console.log(err)
@@ -114,6 +156,17 @@ export default {
   margin: 0 auto;
   .perLeft {
     width: 320px;
+    .btnText{
+      margin-top: 40px;
+      margin-bottom: 40px;
+      text-align: center;
+      .btn{
+        background-color: rgb(198, 55, 50);
+        width: 100%;
+        color: #fff;
+        font-weight: 600;
+      }
+    }
     .personInfo {
       color: rgb(100, 100, 100);
       background-color: #fff;

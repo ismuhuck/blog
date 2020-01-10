@@ -18,35 +18,35 @@
         <div class="infoBody">
           <div class="infiLabel">
             <div class="label">文章</div>
-            <div class="value">{{tanzhu.allarticles}}</div>
+            <div class="value">{{text.length}}</div>
           </div>
           <div class="infiLabel">
             <div class="label">粉丝</div>
-            <div class="value">{{tanzhu.likemeNum}}</div>
+            <div class="value">{{likeme}}</div>
           </div>
           <div class="infiLabel">
-            <div class="label">喜欢</div>
-            <div class="value">{{tanzhu.focusNum}}</div>
+            <div class="label">关注</div>
+            <div class="value">{{focus}}</div>
           </div>
           <div class="infiLabel">
             <div class="label">收藏</div>
-            <div class="value">{{tanzhu.shoucang}}</div>
+            <div class="value">{{shoucang}}</div>
           </div>
         </div>
-        <div class="footer">
-          <button class="Btn btn1" @click="focus">{{focu}}</button>
-          <button class="Btn btn2">私信</button>
-        </div>
+      </div>
+
+      <div class="btnText">
+        <router-link to="/editor" class="btn">编写文章</router-link>
       </div>
     </div>
     <div class="perRight">
       <div class="textInfo">
-        <h4>{{article.title}} <span class="icon iconfont icon-xin shoucang" title="收藏本文" @click="shoucang"></span> </h4>
+        <h4>{{article.blogTitle}}</h4>
         <div class="content" v-html="article.content">
         </div>
       </div>
       <div class="like">
-         <i class="icon iconfont icon-dianzan" @click="like" :class="{red:flag}"></i>
+         <i class="icon iconfont icon-dianzan" @click="like"></i>
          <span>当前有人{{count}}点赞</span>
          <div class="dianzanAva" v-for="(item,i) in dianzan" :key="i">
            <img :src="item.avatar" alt="">
@@ -74,7 +74,6 @@
       <div class="commentNew">
         <div class="newtop">请勿发布不友善或者负能量的内容，与人为善，比聪明更重要</div>
         <div class="newcontent">
-          <!-- <input type="textarea" class="comInput" v-model="comment"> -->
           <textarea name="commentArea" cols="30" rows="10" class="comInput" v-model="comment"></textarea>
         </div>
         <div class="newbottom">
@@ -85,118 +84,75 @@
   </div>
 </template>
 <script>
+import { log } from 'util';
 export default {
   data() {
     return {
-      id:'',
-	  comment: "",
-    focu:'关注',
-    isfocus: localStorage.setItem('isfocus',false),
-	  flag:false,
-      user:{
-        nickName:'',
-        avatar:'',
-        qianming:''
-      },
-      article:{
-        title:'',
-        content:''
-      },
-	  commentInfo:[],
-	  dianzan:[],
-	  count:0,
-    token:localStorage.getItem('Authorization'),
-    tanzhu:{
-      allarticles:0,
-      likemeNum:0,
-      focusNum:0,
+        article:{
+        },
+        commentInfo:{},
+        count:0,
+        dianzan:[],
+      comment: "",
+      text:'',
+      token:localStorage.getItem('Authorization'),
+      user:{},
+      likeme:0,
+      focus:0,
       shoucang:0
-    }
     };
   },
   methods:{
-    // 获取当前坛主所有信息
-    getAlltanzhu(){
+    getUser(){
       this.axios({
         method:'get',
-        url:'tanzhu',
-        params: {
-          articleId:this.$route.query.articleId
-        }
+        url:'getUser'
       })
       .then( res => {
         const {data:result} = res
-        this.tanzhu.allarticles = result.allArticle.length
-        this.tanzhu.likemeNum = result.user.likeme.length
-        this.tanzhu.focusNum = result.user.focus.length
-        this.tanzhu.shoucang = result.user.collecting.length
+        this.user = result
+        this.focus = this.user.focus.length
+        this.likeme = this.user.likeme.length
+        this.shoucang = this.user.collecting.length
+      })
+      .catch( err => {
+        console.log(err)
       })
     },
-
-  // 收藏文章
-
-  shoucang(){
-    if(!this.token){
-      return this.$message.error('请登录后收藏')
-    }
-    this.axios({
-      method:'post',
-      url:'shoucang',
-      data:{
-        articleId:this.$route.query.articleId
-      }
-    })
-    .then(res => {
-      const {data:result} = res 
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  },
-
-	// 关注
-	focus(){
-		if(!this.token){
-			return this.$message.error('你还未登录请登录')
-    }
-		this.axios({
-			method:'post',
-      url:'focus',
-      data:{
-        articleId:this.$route.query.articleId
-      }
-		})
-		.then(res => {
+    getArticle(){
+        this.axios({
+            method:'get',
+            url:'thisArticle',
+            params: {
+                articleId:this.$route.query.articleId
+             }
+        })
+        .then( res => {
+            const {data:result} = res
+            this.article = result.article
+            this.commentInfo = result.article.comment
+            this.count = result.article.like.length
+            this.dianzan = result.article.like
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    },
+    // 获取文章数量
+    getAll(){
+      this.axios({
+      method:'get',
+      url:'getArticle',
+      // headers:{
+      //     Authorization:token
+      //   }
+    }).then((res) => {
       const {data:result} = res
-      if(result.code === 1){
-        return this.$message.error('您不可关注您自己')
-      }
-      this.likeme()
-      this.getAlltanzhu()
-		})
-		.catch(err => {
-			console.log(err)
-    })
-    
-  },
-  // 粉丝
-  likeme(){
-    this.axios({
-      method:'post',
-      url:'likeme',
-      data:{
-        // 当前文章所在坛主 id
-        _id:this.id
-      }
-    })
-    .then(res => {
-      const {data:result} = res
-    })
-    .catch(err => {
+      this.text=result
+    }).catch((err) => {
       console.log(err)
-    })
-  },
-
+    });
+    },
     // 点赞
     like(){
 		if(!this.token){
@@ -257,40 +213,12 @@ export default {
           return this.$message.error('服务器出错，请稍后重试')
       })
     },
-    // 获取文章详情
-    getArticle(){
-       this.axios({
-      method:'get',
-      url:'thisArticle',
-      params: {
-      articleId:this.$route.query.articleId
-    }
-    })
-    .then( res => {
-	  const {data:result} = res
-      if(result.code===0){
-        this.user.nickName=result.user.nickName
-        this.user.avatar = result.user.avatar
-        this.user.qianming = result.user.qianming
-        this.id = result.user._id
-        this.article.title = result.article.blogTitle
-        this.article.content = result.article.content
-		    this.commentInfo = result.article.comment
-		    this.count = result.article.like.length
-        this.dianzan = result.article.like
-        return this.$message.success('数据请求成功')
-      }
-      return this.$message.error('服务器错误，数据请求失败')
-    })
-    .catch(err => {
-      console.log(err)
-    })
-    }
   },
-  created() {
+  mounted(){
+    this.getUser()
     this.getArticle()
-    this.getAlltanzhu()
-  },
+    this.getAll()
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -300,6 +228,17 @@ export default {
   margin: 0 auto;
   .perLeft {
     width: 320px;
+    .btnText{
+      margin-top: 40px;
+      margin-bottom: 40px;
+      text-align: center;
+      .btn{
+        background-color: rgb(198, 55, 50);
+        width: 100%;
+        color: #fff;
+        font-weight: 600;
+      }
+    }
     .personInfo {
       color: rgb(100, 100, 100);
       background-color: #fff;
@@ -336,29 +275,9 @@ export default {
         padding: 20px 10px;
         border-bottom: 1px solid rgb(235, 235, 235);
       }
-      .footer {
-        padding: 20px 10px;
-        display: flex;
-        justify-content: center;
-        .Btn {
-          border: 1px solid rgb(198, 55, 50);
-          background-color: white;
-          width: 50%;
-          padding: 5px 0;
-        }
-        .btn1 {
-          border-right: none;
-          border-top-left-radius: 3px;
-          border-bottom-left-radius: 3px;
-        }
-        .btn2 {
-          border-bottom-right-radius: 3px;
-          border-top-right-radius: 3px;
-        }
-      }
     }
   }
-  .perRight {
+ .perRight {
     margin-left: 10px;
     .textInfo {
       width: 784px;

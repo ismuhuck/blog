@@ -14,6 +14,7 @@ import EditInfo from "../components/contentSon/edit/edit_info.vue"
 import Editava from "../components/contentSon/edit/edit_ava.vue"
 import EditPassword from "../components/contentSon/edit/edit_password.vue"
 import About from "../components/aboutme.vue"
+import ArticlesInfo from "../components/articlesInfo.vue"
 Vue.use(VueRouter);
 const routes = [
   {
@@ -40,6 +41,9 @@ const routes = [
     path:'/articles',component:Articles
   },
   {
+    path:'/articlesInfo',name:"articlesInfo",component:ArticlesInfo
+  },
+  {
     path:'/personal',component:Personal
   },
   {
@@ -58,5 +62,21 @@ const routes = [
 const router = new VueRouter({
   routes
 });
+const whiteList = ['/','/detalis','/forum/default','/articles','/about','/editor','/forum/week','/forum/mouth','/forum/year']
+router.beforeEach((to,from, next) =>{
+  if(whiteList.indexOf(to.path) !== -1 ){
+    next()
+  }
+  else{
+    let token = localStorage.getItem('Authorization')
+    console.log('本地存储的token'+token);
+    if(token === null || token ===''){
+      next('/')
+    }
+    else{
+      next()
+    }
+  }
+})
 
 export default router;

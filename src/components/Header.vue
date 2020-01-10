@@ -175,7 +175,6 @@ export default {
     // ...mapMutations(["changeLogin"]),
     // 登录请求
     submitForm() {
-      // console.log(formName);
       let _this = this;
       this.$refs.login_form.validate(valid => {
         if (valid) {
@@ -193,7 +192,6 @@ export default {
             let userToken =''
             userToken = "Bearer " + res.data.token;
             localStorage.setItem('Authorization',userToken)
-            // console.log(this.userToken); //获取到的token
             // _this.changeLogin({ Authorization: this.userToken });
             // _this.isLogin = true
             this.getToken(this)
@@ -220,7 +218,6 @@ export default {
         // let _this = this;
       this.$refs.register_form.validate(valid => {
         if (valid) {
-          console.log(valid);
           this.axios({
             method: "post",
             url: "register",
@@ -274,7 +271,6 @@ export default {
       let token = localStorage.getItem('Authorization')
       if(token){
         _this.userToken = token
-        // console.log(token)
         _this.axios({
           method: "get",
           url: "getUser",

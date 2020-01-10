@@ -74,7 +74,8 @@ export default {
       }).then(res => {
         const {data:result} = res
         if(result.code===0){
-          return this.$message.success('发表成功');
+         this.$router.push({ path: '/personal'})
+         return this.$message.success('发表成功');
         }
         else{
           this.$message.error('发表失败')
