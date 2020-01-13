@@ -25,6 +25,12 @@
       <el-form-item prop="address">
         <el-input v-model="update.address" type="text" placeholder="家庭地址"></el-input>
       </el-form-item>
+       <el-form-item>
+          <el-select v-model="update.sex" placeholder="您的性别">
+            <el-option label="男" value="man"></el-option>
+            <el-option label="女" value="woman"></el-option>
+          </el-select>
+       </el-form-item>
       <el-form-item prop="qq">
         <el-input v-model="update.qq" placeholder="QQ号" auto-complete="off"></el-input>
       </el-form-item>
@@ -49,7 +55,8 @@ export default {
         qq: "",
         address: "",
         company: "",
-        qianming: ""
+        qianming: "",
+        sex:''
       },
       updateRule: {
         nickName: [
@@ -88,12 +95,12 @@ export default {
               address: this.update.address,
               company: this.update.company,
               qq: this.update.qq,
-              qianming: this.update.qianming
+              qianming: this.update.qianming,
+              sex:this.update.sex
             }
           })
             .then(res => {
               const { data: result } = res;
-              console.log(result);
               if (result.code === 1) {
                 return this.$message.error("修改失败，请重试");
               }
@@ -179,6 +186,7 @@ export default {
         this.update.company = result.company
         this.update.qq = result.qq
         this.update.qianming = result.qianming
+        this.update.sex = result.sex
         // console.log(result) 
       })
       .catch(err => {

@@ -5,12 +5,11 @@
         <div class="infoHeader">
           <div class="nick">
             <p>
-              <a href>{{user.nickName}}</a>
+              <a>{{user.nickName}}</a>
             </p>
-            <p>{{user.qianming}}</p>
           </div>
           <div class="ata">
-            <a href>
+            <a>
               <img :src="user.avatar" alt />
             </a>
           </div>
@@ -38,38 +37,36 @@
       <div class="btnText">
         <router-link to="/editor" class="btn">编写文章</router-link>
       </div>
+      <div class="btnText">
+        <router-link to="/personal/articles" class="btn">我的发表
+        </router-link>
+      </div>
+      <div class="record">
+          <div class="recordTitle"><router-link to="/edit/editInfo">个人档</router-link> </div>
+          <p class="recordSex"> <i class="icon iconfont icon-bokeyuan"></i> {{user.sex | sexFilter()}}</p>
+          <p class="recordqianming"> <i class="icon iconfont icon-bokeyuan"></i>{{user.qianming}}</p>
+          <transition mode="out-in">
+          <p class="downLike" v-if="likes" title="我的收藏" style="text-align:center;color:red;margin-bottom:0;height:142px;"><i @click="likes_show" class="icon iconfont icon-xin" style="font-size:20px"></i></p>
+          <ul v-else class="likes" style="margin-bottom:0">
+            <li><router-link to="/personal/focus">我的关注</router-link> </li>
+            <li><router-link to="/personal/collecting">我的收藏</router-link> </li>
+            <li><router-link to="/personal/like">我的粉丝</router-link> </li>
+            <li style="text-align:center"><i @click="likes_show" class="icon iconfont icon-xin" style="font-size:20px;color:red"></i></li>
+          </ul>
+          </transition>
+        </div>
     </div>
-    <div class="perRight">
-      <div class="textInfo">
-        <h4>我的主页</h4>
-      </div>
-      <div class="personalBlog" v-for="(item,i) in text" :key="i">
-        <div class="blog">
-          <div class="blogLeft">
-            <router-link :to='{path:"/articlesInfo",query: { articleId: item._id }}'>{{item.blogTitle}}<i class="icon iconfont icon-daohang"></i></router-link>
-          </div>
-          <div class="blogRight">
-            <span class="icon iconfont icon-dianzan"><span>{{item.like.length}}</span> </span>
-            <span class="icon iconfont icon-xinxi"><span>{{item.comment.length}}</span> </span>
-            <span class="icon iconfont icon-set" @click="deleted(item._id)"></span>
-          </div>
-        </div>
-        <div class="blogBottom">
-            <span>创建于一个月前</span>
-            <span>|</span>
-            <span>评论数：{{item.comment.length}}</span>
-            <span>|</span>
-            <span>点赞数：{{item.like.length}}</span>
-        </div>
-      </div>
+    <div class="perRight"> 
+      <router-view></router-view>
     </div>
   </div>
 </template>
 <script>
-import { log } from 'util';
+import formatTime from '../../util/util'
 export default {
   data() {
     return {
+      likes:true,
       comment: "",
       text:'',
       token:localStorage.getItem('Authorization'),
@@ -79,37 +76,24 @@ export default {
       shoucang:0
     };
   },
+  // 过滤器
+  filters:{
+    sexFilter(data){
+      if(data === 'man'){
+        return '男'
+      }
+      else {
+        return '女'
+      }
+    }
+  },
   methods:{
-    // 删除文章方法
+    // 时间戳格式化方法
+    formatTime:formatTime,
 
-    deleted(_id){
-        this.$confirm('此操作将删除该文章, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-           
-          this.axios.post('deleted',{
-          _id:_id
-        })
-        .then(res => {
-          const {data:result} = res
-          this.getArticle()
-        })
-        .catch(err => {
-          console.log(err)
-        })
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
-       
+    // 关注的显示与隐藏
+    likes_show(){
+      this.likes = !this.likes
     },
 
     getUser(){
@@ -150,6 +134,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.v-enter-active , .v-leave-active{
+  transition: opacity .5s
+}
+.v-enter , .v-leave-to{
+  opacity: 0;
+}
 .personal {
   display: flex;
   width: 1120px;
@@ -204,6 +194,45 @@ export default {
         border-bottom: 1px solid rgb(235, 235, 235);
       }
     }
+    .record{
+      background-color: #fff;
+      padding: 20px 20px;
+      border-radius: 5px;
+      .recordTitle{
+        font-size: 18px;
+        font-weight: 600;
+        padding: 10px 0;
+        border-bottom: 1px solid rgb(215,215,215);
+        a{
+          color: rgb(198, 55, 50)
+        }
+      }
+      .recordSex{
+        padding-bottom: 10px;
+        margin-top: 10px;
+        border-bottom: 1px solid rgb(215,215,215)
+      }
+      .likes{
+        list-style: none;
+        li{
+            padding: 5px 0;
+            a{
+              color: rgb(198, 55, 50);
+              font-weight: 600;
+              font-size: 15px
+            }
+            a.router-link-active::after{
+              content: '\e60b';
+              font-family: "iconfont";
+              display: inline-block;
+              margin-left: 10px
+            }
+        }
+        li:hover{
+          background-color: rgb(235,235,235)
+        }
+      }
+    }
   }
   .perRight {
     margin-left: 10px;
@@ -238,7 +267,6 @@ export default {
             a{
                  color: rgb(100, 100, 100);
             }
-           
         }
         .blogRight{
             span{
@@ -246,7 +274,7 @@ export default {
                 border: 1px solid ;
                 border-radius: 5px;
                 margin-right: 10px;
-                color: rgb(27,161,252);
+                color: rgb(198, 55, 50);
                 span{
                   margin-left: 10px;
                   margin-right: 0;

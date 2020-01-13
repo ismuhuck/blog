@@ -15,6 +15,11 @@ import Editava from "../components/contentSon/edit/edit_ava.vue"
 import EditPassword from "../components/contentSon/edit/edit_password.vue"
 import About from "../components/aboutme.vue"
 import ArticlesInfo from "../components/articlesInfo.vue"
+import Focus from "../components/contentSon/likes/focus.vue"
+import Likeme from '../components/contentSon/likes/like_me.vue'
+import Collecting from "../components/contentSon/likes/collecting.vue"
+import Articles_me from "../components/contentSon/likes/articles_me.vue"
+import Homepage from "../views/focus_user.vue"
 Vue.use(VueRouter);
 const routes = [
   {
@@ -40,11 +45,21 @@ const routes = [
   {
     path:'/articles',component:Articles
   },
+  // 使用命名路由  动态传参
+  {
+    path:'/home/:userId',component:Homepage,name:'home'
+  },
   {
     path:'/articlesInfo',name:"articlesInfo",component:ArticlesInfo
   },
   {
-    path:'/personal',component:Personal
+    path:'/personal',component:Personal,redirect:'/personal/articles',
+    children:[
+      {path:'focus',component:Focus},
+      {path:'like',component:Likeme},
+      {path:'collecting',component:Collecting},
+      {path:'articles',component:Articles_me}
+    ]
   },
   {
     path :'/edit',component:EditPersonal,redirect:'/edit/editInfo',
@@ -69,7 +84,7 @@ router.beforeEach((to,from, next) =>{
   }
   else{
     let token = localStorage.getItem('Authorization')
-    console.log('本地存储的token'+token);
+    // console.log('本地存储的token'+token);
     if(token === null || token ===''){
       next('/')
     }
