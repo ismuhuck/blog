@@ -49,7 +49,7 @@
          <i class="icon iconfont icon-dianzan" @click="like" :class="{red:flag}"></i>
          <span>当前有人{{count}}点赞</span>
          <div class="dianzanAva" v-for="(item,i) in dianzan" :key="i">
-           <img :src="item.avatar" alt="">
+           <img :src="item" alt="">
          </div>
       </div>
       <div class="discuss">
@@ -210,9 +210,11 @@ export default {
 			}
 		})
 		.then(res => {
+			// const {data:result} = res
 			const {data:result} = res
-			this.dianzan = result.articleInfo.like
-			this.count = this.dianzan.length
+      console.log(result.articleInfo)
+			this.dianzan = result.articleInfo
+			this.count = result.articleInfo.length
 			if(result.code===2){
 				return this.$message.success('点赞成功')
 			}
