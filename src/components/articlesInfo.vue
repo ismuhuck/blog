@@ -1,55 +1,15 @@
 <template>
-  <div class="personal">
-    <div class="perLeft">
-      <div class="personInfo">
-        <div class="infoHeader">
-          <div class="nick">
-            <p>
-              <a href>{{user.nickName}}</a>
-            </p>
-            <p>{{user.qianming}}</p>
-          </div>
-          <div class="ata">
-            <a href>
-              <img :src="user.avatar" alt />
-            </a>
-          </div>
-        </div>
-        <div class="infoBody">
-          <div class="infiLabel">
-            <div class="label">文章</div>
-            <div class="value">{{text.length}}</div>
-          </div>
-          <div class="infiLabel">
-            <div class="label">粉丝</div>
-            <div class="value">{{likeme}}</div>
-          </div>
-          <div class="infiLabel">
-            <div class="label">关注</div>
-            <div class="value">{{focus}}</div>
-          </div>
-          <div class="infiLabel">
-            <div class="label">收藏</div>
-            <div class="value">{{shoucang}}</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="btnText">
-        <router-link to="/editor" class="btn">编写文章</router-link>
-      </div>
-    </div>
-    <div class="perRight">
+  <div class="container">
       <div class="textInfo">
-        <h4>{{article.blogTitle}}</h4>
+        <h4>{{article.title}}</h4>
         <div class="content" v-html="article.content">
         </div>
       </div>
       <div class="like">
          <i class="icon iconfont icon-dianzan" @click="like"></i>
-         <span>当前有人{{count}}点赞</span>
-         <div class="dianzanAva" v-for="(item,i) in dianzan" :key="i">
-           <img :src="item.avatar" alt="">
+         <span>当前有人{{likeList.length}}点赞</span>
+         <div class="dianzanAva" v-for="(item,i) in likeList" :key="i">
+           <img :src="item" alt="">
          </div>
       </div>
       <div class="discuss">
@@ -80,7 +40,6 @@
           <button class="commentBtn" @click="commentText">评论</button>
         </div>
       </div>
-    </div>
   </div>
 </template>
 <script>
@@ -88,51 +47,28 @@ import { log } from 'util';
 export default {
   data() {
     return {
-        article:{
-        },
-        commentInfo:{},
-        count:0,
-        dianzan:[],
+      article:{},
+      commentInfo:{},
+      likeList:[],
       comment: "",
       text:'',
       token:localStorage.getItem('Authorization'),
-      user:{},
-      likeme:0,
-      focus:0,
-      shoucang:0
     };
   },
   methods:{
-    getUser(){
-      this.axios({
-        method:'get',
-        url:'getUser'
-      })
-      .then( res => {
-        const {data:result} = res
-        this.user = result
-        this.focus = this.user.focus.length
-        this.likeme = this.user.likeme.length
-        this.shoucang = this.user.collecting.length
-      })
-      .catch( err => {
-        console.log(err)
-      })
-    },
     getArticle(){
         this.axios({
             method:'get',
             url:'thisArticle',
             params: {
-                articleId:this.$route.query.articleId
+                articleId:this.$route.params.articleId,
+                userId:this.$route.params.userId
              }
         })
         .then( res => {
             const {data:result} = res
             this.article = result.article
-            this.commentInfo = result.article.comment
-            this.count = result.article.like.length
-            this.dianzan = result.article.like
+            this.commentInfo = result.comment
         })
         .catch(err => {
             console.log(err)
@@ -162,27 +98,31 @@ export default {
 			method:'post',
 			url:'like',
 			data:{
-				articleId:this.$route.query.articleId
+				articleId:this.$route.params.articleId
 			}
 		})
 		.then(res => {
 			const {data:result} = res
-			this.dianzan = result.articleInfo.like
-			this.count = this.dianzan.length
+      this.likeList = result.articleInfo
 			if(result.code===2){
 				return this.$message.success('点赞成功')
 			}
 			if(result.code === 3){
 				return this.$message.success('取消点赞')
 			}
-			this.flag = !this.flag
 		})
 		.catch(err =>{
 			console.log(err)
-			this.$message.error('服务器错误，请重试')
 		})
-		
-	},
+  },
+  getlikeList(){
+      this.axios.get('likeList',{params:{articleId:this.$route.params.articleId}})
+      .then(res => {
+        const {data : result} = res
+        this.likeList = result.like
+      })
+      .catch(err => {console.log(err)})
+    },
 
     // 发表评论
     commentText(){
@@ -194,11 +134,11 @@ export default {
         return this.$message.error('不能发表空评论')
       }
       this.axios({
-        method:'post',
+        method:'post',  
         url:'commentText',
         data:{
           comment:this.comment,
-          articleId:this.$route.query.articleId
+          articleId:this.$route.params.articleId
         }
       })
       .then(res => {
@@ -215,73 +155,16 @@ export default {
     },
   },
   mounted(){
-    this.getUser()
+    // this.getUser()
     this.getArticle()
     this.getAll()
+    this.getlikeList()
   }
 };
 </script>
 <style lang="scss" scoped>
-.personal {
-  display: flex;
-  width: 1120px;
-  margin: 0 auto;
-  .perLeft {
-    width: 320px;
-    .btnText{
-      margin-top: 40px;
-      margin-bottom: 40px;
-      text-align: center;
-      .btn{
-        background-color: rgb(198, 55, 50);
-        width: 100%;
-        color: #fff;
-        font-weight: 600;
-      }
-    }
-    .personInfo {
-      color: rgb(100, 100, 100);
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      border-top: 3px solid rgb(198, 55, 50);
-      .infoHeader {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        border-bottom: 1px solid rgb(235, 235, 235);
-        padding-bottom: 20px;
-        .nick {
-          p {
-            margin-bottom: 5px;
-            a {
-              color: rgb(100, 100, 100);
-            }
-          }
-        }
-        .ata {
-          a {
-            img {
-              width: 55px;
-              height: 55px;
-              border-radius: 50%;
-            }
-          }
-        }
-      }
-      .infoBody {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 10px;
-        border-bottom: 1px solid rgb(235, 235, 235);
-      }
-    }
-  }
- .perRight {
-    margin-left: 10px;
     .textInfo {
       width: 784px;
-
       background-color: #fff;
       border-radius: 8px;
       padding: 20px;
@@ -445,7 +328,5 @@ export default {
           height: 30px;
         }
       }
-    }
-  }
 }
 </style>

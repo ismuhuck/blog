@@ -276,8 +276,8 @@ export default {
           url: "getUser",
         }).then(res =>{
           const {data:result} = res
-          _this.userInfo.nickName = result.nickName
-          _this.userInfo.avatar = result.avatar
+          _this.userInfo.nickName = result.user.nickName
+          _this.userInfo.avatar = result.user.avatar
         })
         .catch(err =>{
           console.log(err)

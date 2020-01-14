@@ -6,7 +6,7 @@
       <div class="personalBlog" v-for="(item,i) in text" :key="i">
         <div class="blog">
           <div class="blogLeft">
-            <router-link :to='{path:"/articlesInfo",query: { articleId: item._id }}'>{{item.blogTitle}}<i class="icon iconfont icon-daohang"></i></router-link>
+            <router-link :to='{name:"articlesInfo",params:{articleId:item._id,userId:item.userId}}'>{{item.blogTitle}}<i class="icon iconfont icon-daohang"></i></router-link>
           </div>
           <div class="blogRight">
             <span class="icon iconfont icon-dianzan" title="点赞数"><span>{{item.like.length}}</span> </span>

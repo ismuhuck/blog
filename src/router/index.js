@@ -7,7 +7,9 @@ import Year from "../components/contentSon/blog/year.vue"
 import Week from "../components/contentSon/blog/weekBlog.vue"
 import Mouth from "../components/contentSon/blog/mouthBlog.vue"
 import Editor from "../components/editor.vue"
-import Articles from "../components/articles.vue"
+import Homepage from "../components/homepage.vue"
+import Articles from "../components/homepage/articles.vue"
+import ArticlesList from "../components/homepage/articlesList.vue"
 import Personal from "../components/personal.vue"
 import EditPersonal from "../components/editpersonal.vue"
 import EditInfo from "../components/contentSon/edit/edit_info.vue"
@@ -19,7 +21,7 @@ import Focus from "../components/contentSon/likes/focus.vue"
 import Likeme from '../components/contentSon/likes/like_me.vue'
 import Collecting from "../components/contentSon/likes/collecting.vue"
 import Articles_me from "../components/contentSon/likes/articles_me.vue"
-import Homepage from "../views/focus_user.vue"
+// import Homepage from "../views/focus_user.vue"
 Vue.use(VueRouter);
 const routes = [
   {
@@ -43,22 +45,27 @@ const routes = [
     path:'/editor',component:Editor
   },
   {
-    path:'/articles',component:Articles
+    path:'/homepage',component:Homepage,name:'homepage',
+    children:[
+      {path:'articles/:articleId/:userId',component:Articles,name:'articles'},
+      {path:'articlesList/:userId',component:ArticlesList,name:'home'}
+    ]
   },
   // 使用命名路由  动态传参
-  {
-    path:'/home/:userId',component:Homepage,name:'home'
-  },
-  {
-    path:'/articlesInfo',name:"articlesInfo",component:ArticlesInfo
-  },
+  // {
+  //   path:'/home/:userId',component:Homepage,name:'home'
+  // },
+  // {
+  //   path:'/articlesInfo',name:"articlesInfo",component:ArticlesInfo
+  // },
   {
     path:'/personal',component:Personal,redirect:'/personal/articles',
     children:[
       {path:'focus',component:Focus},
       {path:'like',component:Likeme},
       {path:'collecting',component:Collecting},
-      {path:'articles',component:Articles_me}
+      {path:'articles',component:Articles_me},
+      {path:'articlesInfo/:articleId/:userId',component:ArticlesInfo,name:'articlesInfo'}
     ]
   },
   {

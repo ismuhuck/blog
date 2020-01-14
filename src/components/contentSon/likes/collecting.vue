@@ -6,7 +6,7 @@
         <div class="collecting" v-for="(item,i) in collecting" :key="i">
             <div class="title">{{item.title}} <span class="time"> 收藏于：2018-10-10</span></div>
             <div class="content" v-html="item.content"></div>
-            <router-link :to="{path:'/articles',query:{articleId:item._id}}">查看全文</router-link>
+            <router-link :to="{name:'articles',params:{articleId:item._id,userId:item.userId}}">查看全文</router-link>
         </div>
     </div>
 </template>

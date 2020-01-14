@@ -103,10 +103,10 @@ export default {
       })
       .then( res => {
         const {data:result} = res
-        this.user = result
+        this.user = result.user
         this.focus = this.user.focus.length
         this.likeme = this.user.likeme.length
-        this.shoucang = this.user.collecting.length
+        this.shoucang = result.collecting.length
       })
       .catch( err => {
         console.log(err)

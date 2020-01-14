@@ -4,7 +4,7 @@
       <img :src="item.avatar" alt class="ata" />
       <span class="span1">分享</span>
       <!-- 通过属性绑定 query进行动态路由传参 -->
-      <router-link :to="{path:'/articles',query:{articleId:item._id}}">
+      <router-link :to="{name:'articles',params:{articleId:item._id,userId:item.userId}}">
         <span class="span2">{{item.title}}</span>
         <span class="span3">
           <span class="span4">{{item.nickName}}发表于</span>
@@ -37,8 +37,8 @@ export default {
     .then((res) =>{
       const {data:result} = res
       this.summary = result.article
+      // console.log(typeof(result.article[0].userId))
       let time = result.article[0].createTime
-      console.log(result)
       // console.log(formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(time)) ) )
     })
     .catch(err =>{
