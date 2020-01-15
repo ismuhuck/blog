@@ -7,7 +7,7 @@
             <div class="avatar"><img :src="item.avatar" alt=""></div>
             <div class="likemeInfo">
                 <div class="box">
-                    <div class="nickName"><span>{{item.nickName}}</span>  <span class="time"> 从2018-10-10开始关注我</span> </div>
+                    <div class="nickName"><router-link :to="{ name: 'home', params: { userId: item._id }}"><span>{{item.nickName}}</span></router-link>  <span class="time"> 从{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.likemeTime)))}}开始关注我</span> </div>
                     <div class="qianming">{{item.qianming}}</div>
                 </div>
             </div>
@@ -15,6 +15,7 @@
     </div>
 </template>
 <script>
+import formatTime from '../../../../util/util'
 export default {
     data() {
         return {
@@ -22,6 +23,7 @@ export default {
         }
     },
     methods:{
+        formatTime:formatTime,
         user(){
             this.axios({
                 method:'get',
@@ -77,6 +79,9 @@ export default {
                 color: rgb(198, 55, 50);
                 display: flex;
                 justify-content: space-between;
+                a{
+                    color: rgb(198, 55, 50);
+                }
                 .time{
                     position: absolute;
                     right: 50px;
@@ -86,6 +91,7 @@ export default {
             }
             .qianming{
                 font-size: 14px;
+                width: 684px;
             }
     }
 }

@@ -37,9 +37,7 @@ export default {
     .then((res) =>{
       const {data:result} = res
       this.summary = result.article
-      // console.log(typeof(result.article[0].userId))
       let time = result.article[0].createTime
-      // console.log(formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(time)) ) )
     })
     .catch(err =>{
       console.log(err)

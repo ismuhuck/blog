@@ -5,9 +5,9 @@
         <div class="infoHeader">
           <div class="nick">
             <p>
-              <a href>{{user.nickName}}</a>
+              {{user.nickName}}
             </p>
-            <p>{{user.qianming}}</p>
+            <p class="qianming">{{user.qianming}}</p>
           </div>
           <div class="ata">
             <a href>
@@ -16,25 +16,25 @@
           </div>
         </div>
         <div class="infoBody">
-          <div class="infiLabel">
+          <div class="infoLabel">
             <div class="label">文章</div>
-            <div class="value">{{tanzhu.allarticlesNum}}</div>
+            <div class="value"><span> {{tanzhu.allarticlesNum}}</span></div>
           </div>
-          <div class="infiLabel">
+          <div class="infoLabel">
             <div class="label">粉丝</div>
-            <div class="value">{{tanzhu.likemeNum}}</div>
+            <div class="value"><span>{{tanzhu.likemeNum}}</span></div>
           </div>
-          <div class="infiLabel">
+          <div class="infoLabel">
             <div class="label">关注</div>
-            <div class="value">{{tanzhu.focusNum}}</div>
+            <div class="value"><span>{{tanzhu.focusNum}}</span></div>
           </div>
-          <div class="infiLabel">
+          <div class="infoLabel">
             <div class="label">收藏</div>
-            <div class="value">{{tanzhu.collectingNum}}</div>
+            <div class="value"><span>{{tanzhu.collectingNum}}</span></div>
           </div>
         </div>
         <div class="footer">
-          <button class="Btn btn1" @click="focus">关注</button>
+          <button class="Btn btn1" @click="focus">{{focusStatus}}</button>
           <button class="Btn btn2">私信</button>
         </div>
       </div>
@@ -56,13 +56,37 @@ export default {
       commentInfo:[],
       likeList:[],
       token:localStorage.getItem('Authorization'),
-      tanzhu:{}
+      tanzhu:{},
+      focusStatus:'关注'
     };
   },
   methods:{
+    // 获取关注状态
+
+    getfocusStatus(){
+      this.axios.get('facusStatus',{
+        params:{
+          userId:this.$route.params.userId
+        }
+      })
+      .then( res => {
+        const {data:result} = res
+        console.log(result)
+        if(result.code === 8){
+          this.focusStatus = "已关注"
+        }
+        if(result.code === 9){
+          this.focusStatus = '关注'
+        }
+      })
+      .catch( err => {
+        console.log(err)
+      })
+    },
+
     // 获取文章和坛主详情
     getArticle(){
-       this.axios({
+      this.axios({
       method:'get',
       url:'thisArticle',
       params: {
@@ -89,7 +113,7 @@ export default {
       console.log(err)
     })
     },
-    // 获取当前坛主当前关注数或者粉丝数
+    // 获取当前坛主当前关注数及粉丝数
     getAlltanzhu(){
       this.axios({
         method:'get',
@@ -119,11 +143,13 @@ export default {
 		})
 		.then(res => {
       const {data:result} = res
+      console.log(result)
       if(result.code === 1){
         return this.$message.error('不可关注自己')
       }
       this.likeme()
       this.getAlltanzhu()
+      this.getfocusStatus()
       if(result.code === 2){
         return this.$message.success('关注成功')
       }
@@ -143,11 +169,12 @@ export default {
       url:'likeme',
       data:{
         // 当前文章所在坛主 id
-        _id:this.id
+        _id:this.$route.params.userId
       }
     })
     .then(res => {
       const {data:result} = res
+      console.log(result)
     })
     .catch(err => {
       console.log(err)
@@ -157,8 +184,10 @@ export default {
   created() {
     this.getArticle()
     this.getAlltanzhu()
-    // console.log(this.$route.params)
   },
+  mounted(){
+    this.getfocusStatus()
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -183,9 +212,13 @@ export default {
         .nick {
           p {
             margin-bottom: 5px;
-            a {
-              color: rgb(100, 100, 100);
-            }
+            font-size: 18px;
+            color: rgb(198, 55, 50);
+            font-weight: 600;
+          }
+          p.qianming{
+            font-size: 14px;
+            font-weight: normal;
           }
         }
         .ata {
@@ -203,6 +236,19 @@ export default {
         justify-content: space-between;
         padding: 20px 10px;
         border-bottom: 1px solid rgb(235, 235, 235);
+        .infoLabel{
+          .value{
+            text-align: center;
+            span{
+              display: inline-block;
+              width: 25px;
+              height: 25px;
+              background-color: rgb(198, 55, 50);
+              color: #fff;
+              border-radius: 50%;
+            }
+          }
+        }
       }
       .footer {
         padding: 20px 10px;
@@ -210,6 +256,7 @@ export default {
         justify-content: center;
         .Btn {
           border: 1px solid rgb(198, 55, 50);
+          color: rgb(198, 55, 50);
           background-color: white;
           width: 50%;
           padding: 5px 0;

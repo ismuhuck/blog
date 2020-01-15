@@ -1,10 +1,10 @@
 <template>
     <div class="container">
         <div class="textInfo">
-            <h4>我的收藏</h4>
+            <h4>我点赞的</h4>
         </div>
-        <div class="collecting" v-for="(item,i) in collecting" :key="i">
-            <div class="title">{{item.title}} <span class="time"> 收藏于：{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.likeTime)))}}</span></div>
+        <div class="collecting" v-for="(item,i) in likeArticle" :key="i">
+            <div class="title">{{item.title}} <span class="time"> 点赞于：{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.likeArticleTime)))}}</span></div>
             <div class="content" v-html="item.content"></div>
             <router-link :to="{name:'articles',params:{articleId:item._id,userId:item.userId}}">查看全文</router-link>
         </div>
@@ -15,16 +15,22 @@ import formatTime from '../../../../util/util'
 export default {
     data() {
         return {
-            collecting:[]
+            likeArticle:[]
         }
     },
     methods:{
         formatTime:formatTime,
         articles(){
-            this.axios.get('collecting')
+            this.axios.get('likeArticle')
             .then( res => {
                 const {data:result} = res
-                this.collecting = result.collecting
+                if(result.code===0){
+                   return this.likeArticle = result.likeArticle 
+                }
+                // if(result.code===13){
+                //    return  
+                // }
+                
             })
         }
     },

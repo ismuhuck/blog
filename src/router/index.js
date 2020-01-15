@@ -21,6 +21,7 @@ import Focus from "../components/contentSon/likes/focus.vue"
 import Likeme from '../components/contentSon/likes/like_me.vue'
 import Collecting from "../components/contentSon/likes/collecting.vue"
 import Articles_me from "../components/contentSon/likes/articles_me.vue"
+import LikeArticle from "../components/contentSon/likes/likeArticle.vue"
 // import Homepage from "../views/focus_user.vue"
 Vue.use(VueRouter);
 const routes = [
@@ -65,7 +66,8 @@ const routes = [
       {path:'like',component:Likeme},
       {path:'collecting',component:Collecting},
       {path:'articles',component:Articles_me},
-      {path:'articlesInfo/:articleId/:userId',component:ArticlesInfo,name:'articlesInfo'}
+      {path:'articlesInfo/:articleId/:userId',component:ArticlesInfo,name:'articlesInfo'},
+      {path:'likeArticle',component:LikeArticle}
     ]
   },
   {
@@ -91,7 +93,6 @@ router.beforeEach((to,from, next) =>{
   }
   else{
     let token = localStorage.getItem('Authorization')
-    // console.log('本地存储的token'+token);
     if(token === null || token ===''){
       next('/')
     }

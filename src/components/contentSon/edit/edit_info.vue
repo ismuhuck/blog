@@ -37,7 +37,7 @@
       <el-form-item prop="company">
         <el-input v-model="update.company" type="text" placeholder="公司地址"></el-input>
       </el-form-item>
-      <textarea name="qianming" id="qianming" cols="30" rows="10" v-model="update.qianming" placeholder="个人签名"></textarea>
+      <textarea name="qianming" id="qianming" cols="30" rows="3" v-model="update.qianming" placeholder="个人签名"></textarea>
       <el-form-item class="btns">
         <el-button  @click="updateInfo" id="updateBtn">确认修改</el-button>
         <!-- <el-button type="primary" @click="setupdate">重置</el-button> -->
@@ -180,13 +180,7 @@ export default {
       })
       .then(res => {
         const {data:result} = res
-        this.update.email = result.email
-        this.update.nickName = result.nickName
-        this.update.address = result.address
-        this.update.company = result.company
-        this.update.qq = result.qq
-        this.update.qianming = result.qianming
-        this.update.sex = result.sex
+        this.update = result.user
         // console.log(result) 
       })
       .catch(err => {
@@ -227,6 +221,12 @@ export default {
     width: 450px;
     border-radius: 5px;
     border: 1px solid rgb(235, 235, 235);
+    outline: none;
+    color: rgb(100, 100, 100);
+    padding: 10px 18px;
+  }
+  textarea:focus{
+    border: 1px solid rgb(207, 71, 66);
   }
   #updateBtn {
     color: rgb(27,161,252);

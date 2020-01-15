@@ -3,16 +3,12 @@
     <div class="textInfo">
       <h4>
         {{article.title}}
-        <span
-          class="icon iconfont icon-xin shoucang"
-          title="收藏本文"
-          @click="shoucang"
-        ></span>
+        <span class="icon iconfont icon-xin shoucang" :class="[flag ? active : unactive] " title="收藏本文" @click="shoucang"></span>
       </h4>
       <div class="content" v-html="article.content"></div>
     </div>
     <div class="like">
-      <i class="icon iconfont icon-dianzan" @click="like"></i>
+      <i class="icon iconfont icon-dianzan" @click="like" :class="likeArticleflag ? likeactive :unlikeactive"></i>
       <span>当前有人{{likeList.length}}点赞</span>
       <div class="dianzanAva" v-for="(item,i) in likeList" :key="i">
         <img :src="item" alt />
@@ -56,11 +52,62 @@ export default {
       likeList: {},
       commentInfo: [],
       article: {},
-      token: localStorage.getItem("Authorization")
+      token: localStorage.getItem("Authorization"),
+      flag:false,
+      active:'active',
+      unactive:'unactive',
+      likeArticleflag:false,
+      likeactive:'likeactive',
+      unlikeactive:'unlikeactive'
     };
   },
   methods: {
-    // 获取文章和坛主详情
+    
+    // 获取收藏状态
+
+    getcollectingStatus(){
+      this.axios.get('collectingStatus',{
+        params:{
+          articleId:this.$route.params.articleId
+        }
+      })
+      .then( res => {
+        const {data:result} = res
+        if(result.code === 10){
+          this.flag = true
+        }
+        else{
+          this.flag = false
+        }
+        console.log(result)
+      })
+      .catch( err => {
+        console.log(err)
+      })
+    },
+  // 获取点赞状态
+
+    getlikeArticle(){
+      this.axios.get('likeStatus',{
+        params:{
+          articleId:this.$route.params.articleId
+        }
+      })
+      .then(res => {
+        const {data:result} = res
+        if(result.code ===12){
+          this.likeArticleflag=true
+        }
+        else{
+          this.likeArticleflag = false
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 获取文章内容和评论
     getArticle() {
       this.axios({
         method: "get",
@@ -97,6 +144,7 @@ export default {
       })
         .then(res => {
           const { data: result } = res;
+          this.getcollectingStatus()
           if(result.code === 2){
              return this.$message.success('收藏成功')
           }
@@ -123,6 +171,7 @@ export default {
         .then(res => {
           const { data: result } = res;
           this.likeList = result.articleInfo;
+          this.getlikeArticle()
           if (result.code === 2) {
             return this.$message.success("点赞成功");
           }
@@ -179,8 +228,10 @@ export default {
     }
   },
   created() {
-    this.getlikeList();
-    this.getArticle();
+    this.getlikeList()
+    this.getArticle()
+    this.getcollectingStatus()
+    this.getlikeArticle()
   }
 };
 </script>
@@ -203,17 +254,30 @@ export default {
       font-size: 20px;
       cursor: pointer;
     }
+    .active{
+      color: rgb(198, 55, 50);
+    }
+    .unactive{
+      color: rgb(75,75,75)
+    }
   }
 }
 .like {
   width: 785px;
   margin: 20px 0 20px 0;
   background-color: #fff;
-  padding: 20px;
+  line-height: 76px;
+  padding: 5px 20px;
   i {
     font-size: 18px;
     color: rgb(100, 100, 100);
     cursor: pointer;
+  }
+  .unlikeactive{
+    color: rgb(100, 100, 100)
+  }
+  .likeactive{
+    color: rgb(198, 55, 50)
   }
   i.red {
     color: rgb(198, 55, 50);

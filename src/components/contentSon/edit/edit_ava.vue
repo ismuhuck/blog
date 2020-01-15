@@ -74,7 +74,7 @@ export default {
       })
       .then(res => {
         const {data:result} = res
-        this.imageUrl = result.avatar
+        this.imageUrl = result.user.avatar
         // console.log(result) 
       })
       .catch(err => {

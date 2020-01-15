@@ -1,9 +1,8 @@
 <template>
   <div class="content">
-    <!-- <div class="top"></div> -->
-    <div class="container">
+    <div class="flexBox">
+      <div class="container">
       <div class="contentLeft">
-        <!-- <button @click="submitFun">提交</button> -->
         <div class="newlist" v-for="(item,index) in list" :key="index">
           <div class="list_box">
             <h4>{{ item.newTitle }}</h4>
@@ -67,6 +66,7 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
 <script>
@@ -118,11 +118,13 @@ export default {
     width: 100%;
     height: 20px;
   }
-  .container {
+  .flexBox{
     display: flex;
+    width: 1120px;
+    margin: 0 auto;
+    .container {
+     display: flex;
     .contentLeft {
-      // border: 1px solid rgb(215, 215, 215);
-      // box-shadow: 1px 1px 1px rgb(215, 215, 215);
       width: 784px;
       background-color: rgb(245, 245, 245);
       border-radius: 8px;
@@ -132,7 +134,6 @@ export default {
         padding-bottom: 1px;
         .list_box {
           margin: 0 30px 30px 30px;
-          // border-top: 1px solid rgb(215, 215, 215);
           h4 {
             color: #444444;
             font-weight: 550;
@@ -277,5 +278,7 @@ export default {
       }
     }
   }
+  }
+  
 }
 </style>

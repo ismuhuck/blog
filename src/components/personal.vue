@@ -15,21 +15,21 @@
           </div>
         </div>
         <div class="infoBody">
-          <div class="infiLabel">
+          <div class="infoLabel">
             <div class="label">文章</div>
-            <div class="value">{{text.length}}</div>
+            <div class="value"><span>{{text.length}}</span></div>
           </div>
-          <div class="infiLabel">
+          <div class="infoLabel">
             <div class="label">粉丝</div>
-            <div class="value">{{likeme}}</div>
+            <div class="value"><span>{{likeme}}</span></div>
           </div>
-          <div class="infiLabel">
+          <div class="infoLabel">
             <div class="label">关注</div>
-            <div class="value">{{focus}}</div>
+            <div class="value"><span>{{focus}}</span></div>
           </div>
-          <div class="infiLabel">
+          <div class="infoLabel">
             <div class="label">收藏</div>
-            <div class="value">{{shoucang}}</div>
+            <div class="value"><span>{{shoucang}}</span></div>
           </div>
         </div>
       </div>
@@ -46,12 +46,13 @@
           <p class="recordSex"> <i class="icon iconfont icon-bokeyuan"></i> {{user.sex | sexFilter()}}</p>
           <p class="recordqianming"> <i class="icon iconfont icon-bokeyuan"></i>{{user.qianming}}</p>
           <transition mode="out-in">
-          <p class="downLike" v-if="likes" title="我的收藏" style="text-align:center;color:red;margin-bottom:0;height:142px;"><i @click="likes_show" class="icon iconfont icon-xin" style="font-size:20px"></i></p>
+          <p class="downLike" v-if="likes" title="我的收藏" style="text-align:center;color:red;margin-bottom:0;height:176px;"><i @click="likes_show" class="icon iconfont icon-xin" style="font-size:20px;cursor:pointer;"><span style="font-size:14px; vertical-align: 2px;"> 点击查看更多</span></i></p>
           <ul v-else class="likes" style="margin-bottom:0">
             <li><router-link to="/personal/focus">我的关注</router-link> </li>
             <li><router-link to="/personal/collecting">我的收藏</router-link> </li>
             <li><router-link to="/personal/like">我的粉丝</router-link> </li>
-            <li style="text-align:center"><i @click="likes_show" class="icon iconfont icon-xin" style="font-size:20px;color:red"></i></li>
+            <li><router-link to="/personal/likeArticle">我点赞的</router-link> </li>
+            <li style="text-align:center"><i @click="likes_show" class="icon iconfont icon-xin" style="font-size:20px;color:red;cursor:pointer;"></i></li>
           </ul>
           </transition>
         </div>
@@ -192,6 +193,19 @@ export default {
         justify-content: space-between;
         padding: 20px 10px;
         border-bottom: 1px solid rgb(235, 235, 235);
+        .infoLabel{
+          .value{
+            text-align:center;
+            span{
+              color: #fff;
+              background-color: rgb(198, 55, 50);
+              width: 25px;
+              height: 25px;
+              border-radius: 50%;
+              display: inline-block;
+            }
+          }
+        }
       }
     }
     .record{
@@ -259,7 +273,6 @@ export default {
       border-radius: 8px;
       margin-top: 20px;
       padding: 20px;
-
       .blog {
         display: flex;
         justify-content: space-between;

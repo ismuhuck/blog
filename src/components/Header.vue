@@ -1,6 +1,10 @@
 <template>
   <div class="header">
     <div class="headerbox">
+      <div class="search-box">
+        <input type="text" placeholder="搜索内容">
+        <i class="icon iconfont icon-bianji"></i>
+      </div>
       <div class="logo">
         <!-- <img src="../assets/logo.jpg" alt="logo" /> -->
       </div>
@@ -329,6 +333,28 @@ body {
           padding: 5px 10px;
         }
       }
+      .search-box{
+        line-height: 50px;
+        float: left;
+        position: relative;
+        input{
+          height: 30px;
+          width: 250px;
+          border: none;
+          outline: none;
+          border-radius: 5px;
+          color: rgb(75,75,75);
+          background: rgb(245,245,245);
+          padding: 5px 10px;
+          font-size: 14px;
+        }
+        i{
+          position: absolute;
+          right: 10px;
+          color: rgb(198, 55, 50);
+          cursor:pointer;
+        }
+      }
       .logo { 
         float: left;
         margin-top: 10px;
@@ -366,10 +392,11 @@ body {
           border: 1px solid rgb(198, 55, 50);
           border-radius: 8px;
           position: absolute;
+          z-index: 1;
           width: 145px;
           background-color: #fff;
           padding: 20px;
-          // top: 60px;
+          // position: relative;
           div {
             i {
               margin-right: 5px;
@@ -379,6 +406,17 @@ body {
                 color: rgb(100, 100, 100);
               }
             }
+          }
+        }
+      }
+      .tabNav{
+        li{
+          a{
+            color: #fff;
+            opacity: 0.6;
+          }
+          a.router-link-exact-active{
+            opacity: 1;
           }
         }
       }

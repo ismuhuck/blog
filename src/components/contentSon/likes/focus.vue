@@ -7,13 +7,14 @@
         <div class="focus" v-for="(item , i) in focus" :key="i">
             <div class="avatar"><img :src="item.avatar" alt=""></div>
             <div class="focusInfo">
-                <div class="nickName"> <router-link :to="{ name: 'home', params: { userId: item._id }}"> {{item.nickName}} </router-link> <span class="time"> 关注于：2018-10-10</span></div>
+                <div class="nickName"> <router-link :to="{ name: 'home', params: { userId: item._id }}"> {{item.nickName}} </router-link> <span class="time"> 关注于：{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.focusTime)))}}</span></div>
                 <div class="qianming">{{item.qianming}} </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import formatTime from '../../../../util/util'
 export default {
     data() {
         return {
@@ -21,6 +22,7 @@ export default {
         }
     },
     methods:{
+        formatTime:formatTime,
         user(){
             this.axios({
                 method:'get',
@@ -29,6 +31,9 @@ export default {
             .then( res => {
                 const {data:result} = res 
                 this.focus = result.user 
+            })
+            .catch(err => {
+                console.log(err)
             })
         }
     },
@@ -85,6 +90,7 @@ export default {
         }
         .qianming{
             font-size: 14px;
+            width: 684px;
         }
     }
 }
