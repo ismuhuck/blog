@@ -4,12 +4,18 @@
         <div class="textInfo">
             <h4>我的关注</h4>
         </div>
-        <div class="focus" v-for="(item , i) in focus" :key="i">
+        <div class="box" v-if="flag" >
+            <div class="focus"  v-for="(item , i) in focus" :key="i">
             <div class="avatar"><img :src="item.avatar" alt=""></div>
             <div class="focusInfo">
                 <div class="nickName"> <router-link :to="{ name: 'home', params: { userId: item._id }}"> {{item.nickName}} </router-link> <span class="time"> 关注于：{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.focusTime)))}}</span></div>
                 <div class="qianming">{{item.qianming}} </div>
             </div>
+            </div>
+        </div>
+        <div class="nothing" v-else >
+            <img src="../../../assets/img/暂无数据.png" alt="">
+            <div class="hint">暂时还没有关注的人哦</div>
         </div>
     </div>
 </template>
@@ -18,7 +24,8 @@ import formatTime from '../../../../util/util'
 export default {
     data() {
         return {
-            focus:{}
+            focus:{},
+            flag:true
         }
     },
     methods:{
@@ -30,7 +37,13 @@ export default {
             })
             .then( res => {
                 const {data:result} = res 
-                this.focus = result.user 
+                if(result.user.length === 0){
+                    this.flag = false
+                }
+                else{
+                    this.flag = true
+                    this.focus = result.user
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -61,6 +74,18 @@ export default {
         // border-bottom: 1px solid rgb(235, 235, 235);
       }
     }
+.nothing{
+    text-align: center;
+    img{
+        width: 300;
+        height: 250px;
+    }
+    .hint{
+        font-size: 18px;
+        color: rgb(198, 55, 50);
+        font-weight: 600;
+    }
+}
 .focus{
     display: flex;
     align-items: center;

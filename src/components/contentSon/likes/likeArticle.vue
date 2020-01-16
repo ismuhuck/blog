@@ -3,10 +3,16 @@
         <div class="textInfo">
             <h4>我点赞的</h4>
         </div>
-        <div class="collecting" v-for="(item,i) in likeArticle" :key="i">
-            <div class="title">{{item.title}} <span class="time"> 点赞于：{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.likeArticleTime)))}}</span></div>
-            <div class="content" v-html="item.content"></div>
-            <router-link :to="{name:'articles',params:{articleId:item._id,userId:item.userId}}">查看全文</router-link>
+        <div class="box" v-if="flag">
+            <div class="collecting" v-for="(item,i) in likeArticle" :key="i">
+                <div class="title">{{item.title}} <span class="time"> 点赞于：{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.likeArticleTime)))}}</span></div>
+                <div class="content" v-html="item.content"></div>
+                <router-link :to="{name:'articles',params:{articleId:item._id,userId:item.userId}}">查看全文</router-link>
+            </div>  
+        </div>
+        <div class="nothing" v-else>
+            <img src="../../../assets/img/暂无数据.png" alt="">
+            <div class="hint">暂时还没有点赞的文章哦，快去点赞吧</div>
         </div>
     </div>
 </template>
@@ -15,7 +21,8 @@ import formatTime from '../../../../util/util'
 export default {
     data() {
         return {
-            likeArticle:[]
+            likeArticle:[],
+            flag:true
         }
     },
     methods:{
@@ -24,13 +31,13 @@ export default {
             this.axios.get('likeArticle')
             .then( res => {
                 const {data:result} = res
-                if(result.code===0){
-                   return this.likeArticle = result.likeArticle 
+                if(result.likeArticle.length === 0){
+                    this.flag = false
                 }
-                // if(result.code===13){
-                //    return  
-                // }
-                
+                else{
+                    this.flag = true
+                    this.likeArticle = result.likeArticle 
+                }
             })
         }
     },
@@ -57,6 +64,18 @@ export default {
         margin-bottom: 0;
         // border-bottom: 1px solid rgb(235, 235, 235);
       }
+}
+.nothing{
+    text-align: center;
+    img{
+        width: 300;
+        height: 250px;
+    }
+    .hint{
+        font-size: 18px;
+        color: rgb(198, 55, 50);
+        font-weight: 600;
+    }
 }
 .collecting{
     margin-top: 20px;

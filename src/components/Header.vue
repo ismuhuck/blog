@@ -414,9 +414,14 @@ body {
           a{
             color: #fff;
             opacity: 0.6;
+            padding: 2px 5px;
           }
           a.router-link-exact-active{
             opacity: 1;
+            border: 1px dashed #ffffff;
+            box-sizing: border-box;
+            padding: 2px 5px;
+            border-radius: 5px;
           }
         }
       }

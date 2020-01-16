@@ -17,7 +17,8 @@
     <div class="discuss">
       <span>评论区</span>
     </div>
-    <div class="commentList" v-for="(item, index) in commentInfo" :key="index">
+    <commentarea :commentInfo="commentInfo" @getArticle='getArticle'></commentarea> 
+    <!-- <div class="commentList" v-for="(item, index) in commentInfo" :key="index">
       <div class="comment">
         <div class="avater">
           <router-link to="/personal">
@@ -28,7 +29,11 @@
           <h4>
             <router-link to="/personal">{{item.nickName}}</router-link>
           </h4>
-          <div class="contentBody">{{item.comment}}</div>
+          <div class="contentBody">
+           
+            <p @click="reply">{{item.comment}} <span class="reply">回复</span></p>
+             
+          </div>
           <div class="contentFooter"></div>
         </div>
       </div>
@@ -41,13 +46,15 @@
       <div class="newbottom">
         <button class="commentBtn" @click="commentText">评论</button>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
+import commentarea from '../component/commentarea.vue'
 export default {
   data() {
     return {
+      isReply:false,
       comment: "",
       likeList: {},
       commentInfo: [],
@@ -61,8 +68,13 @@ export default {
       unlikeactive:'unlikeactive'
     };
   },
+  components:{
+    commentarea,
+  },
   methods: {
-    
+    reply(){
+      this.isReply = !this.isReply
+    },
     // 获取收藏状态
 
     getcollectingStatus(){
@@ -122,6 +134,7 @@ export default {
           if (result.code === 0) {
             this.article = result.article;
             this.commentInfo = result.comment;
+            console.log(result.comment)
             return this.$message.success("数据请求成功");
           }
           return this.$message.error("服务器错误，数据请求失败");
@@ -198,34 +211,34 @@ export default {
     },
 
     // 发表评论
-    commentText() {
-      let token = localStorage.getItem("Authorization");
-      if (!token) {
-        return this.$message.error("您尚未登录，请登录后评论");
-      }
-      if (this.comment.trim() === "") {
-        return this.$message.error("不能发表空评论");
-      }
-      this.axios({
-        method: "post",
-        url: "commentText",
-        data: {
-          comment: this.comment,
-          articleId: this.$route.params.articleId
-        }
-      })
-        .then(res => {
-          const { data: result } = res;
-          if (result.code === 0) {
-            this.$message.success("评论成功");
-            this.comment = "";
-            this.getArticle();
-          }
-        })
-        .catch(err => {
-          return this.$message.error("服务器出错，请稍后重试");
-        });
-    }
+    // commentText() {
+    //   let token = localStorage.getItem("Authorization");
+    //   if (!token) {
+    //     return this.$message.error("您尚未登录，请登录后评论");
+    //   }
+    //   if (this.comment.trim() === "") {
+    //     return this.$message.error("不能发表空评论");
+    //   }
+    //   this.axios({
+    //     method: "post",
+    //     url: "commentText",
+    //     data: {
+    //       comment: this.comment,
+    //       articleId: this.$route.params.articleId
+    //     }
+    //   })
+    //     .then(res => {
+    //       const { data: result } = res;
+    //       if (result.code === 0) {
+    //         this.$message.success("评论成功");
+    //         this.comment = "";
+    //         this.getArticle();
+    //       }
+    //     })
+    //     .catch(err => {
+    //       return this.$message.error("服务器出错，请稍后重试");
+    //     });
+    // }
   },
   created() {
     this.getlikeList()
@@ -325,95 +338,105 @@ export default {
     width: 50%;
   }
 }
-.commentList {
-  margin-bottom: 20px;
-  .comment {
-    display: flex;
-    justify-content: space-between;
-    .avater {
-      a {
-        img {
-          width: 55px;
-          height: 55px;
-          border-radius: 50%;
-        }
-      }
-    }
-    .content {
-      padding: 20px;
-      width: 710px;
-      background-color: #fff;
-      position: relative;
-      h4 {
-        font-size: 16px;
-        font-weight: 500;
-        border-bottom: 1px solid rgb(235, 235, 235);
-        padding-bottom: 20px;
-        a {
-          color: rgb(198, 55, 50);
-        }
-      }
-      .contentBody {
-        font-size: 16px;
-        color: rgb(100, 100, 100);
-        margin-top: 20px;
-      }
-    }
-    .content::before {
-      position: absolute;
-      top: 11px;
-      right: 100%;
-      left: -18px;
-      display: block;
-      width: 0;
-      height: 0;
-      pointer-events: none;
-      content: " ";
-      border-color: transparent;
-      border-style: solid solid outset;
-      border-width: 8px;
-      border-right-color: #d4e0e8;
-    }
-  }
-}
-.commentNew {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  // padding-bottom: 20px;
-  .newtop {
-    border: 1px solid rgb(198, 55, 50);
-    padding: 10px;
-    border-radius: 8px;
-    color: rgb(198, 55, 50);
-  }
-  .newcontent {
-    margin-top: 20px;
-    .comInput {
-      width: 100%;
-      height: 100px;
-      border-radius: 8px;
-      border: 1px solid rgb(235, 235, 235);
-      color: rgb(100, 100, 100);
-    }
-    .comInput:focus {
-      outline: none;
-      border: 1px solid rgb(198, 55, 50);
-    }
-  }
-  .newbottom {
-    margin-top: 10px;
-    // float: right;
-    display: flex;
-    justify-content: flex-end;
-    button {
-      background-color: rgb(198, 55, 50);
-      border: 1px solid rgb(198, 55, 50);
-      color: white;
-      border-radius: 8px;
-      width: 70px;
-      height: 30px;
-    }
-  }
-}
+// .commentList {
+//   margin-bottom: 20px;
+//   .comment {
+//     display: flex;
+//     justify-content: space-between;
+//     .avater {
+//       a {
+//         img {
+//           width: 35px;
+//           height: 35px;
+//           border-radius: 50%;
+//         }
+//       }
+//     }
+//     .content {
+//       padding: 10px;
+//       width: 730px;
+//       background-color: #fff;
+//       position: relative;
+//       h4 {
+//         font-size: 16px;
+//         font-weight: 500;
+//         border-bottom: 1px solid rgb(235, 235, 235);
+//         padding-bottom: 10px;
+//         a {
+//           color: rgb(198, 55, 50);
+//         }
+//       }
+//       .contentBody {
+//         font-size: 15px;
+//         color: rgb(100, 100, 100);
+//         margin-top: 10px;
+//         .reply{
+//           margin-left: 5px;
+//           background-color: rgb(198, 55, 50);
+//           color: #fff;
+//           font-size: 12px;
+//           padding: 0 5px;
+//           border-radius: 3px;
+//           vertical-align: 5px;
+//           cursor: pointer;
+//         }
+//       }
+//     }
+//     .content::before {
+//       position: absolute;
+//       top: 11px;
+//       right: 100%;
+//       left: -18px;
+//       display: block;
+//       width: 0;
+//       height: 0;
+//       pointer-events: none;
+//       content: " ";
+//       border-color: transparent;
+//       border-style: solid solid outset;
+//       border-width: 8px;
+//       border-right-color: #d4e0e8;
+//     }
+//   }
+// }
+// .commentNew {
+//   background-color: #fff;
+//   border-radius: 8px;
+//   padding: 20px;
+//   // padding-bottom: 20px;
+//   .newtop {
+//     border: 1px solid rgb(198, 55, 50);
+//     padding: 10px;
+//     border-radius: 8px;
+//     color: rgb(198, 55, 50);
+//   }
+//   .newcontent {
+//     margin-top: 20px;
+//     .comInput {
+//       width: 100%;
+//       height: 100px;
+//       border-radius: 8px;
+//       border: 1px solid rgb(235, 235, 235);
+//       color: rgb(100, 100, 100);
+//     }
+//     .comInput:focus {
+//       outline: none;
+//       border: 1px solid rgb(198, 55, 50);
+//     }
+//   }
+//   .newbottom {
+//     margin-top: 10px;
+//     // float: right;
+//     display: flex;
+//     justify-content: flex-end;
+//     button {
+//       background-color: rgb(198, 55, 50);
+//       border: 1px solid rgb(198, 55, 50);
+//       color: white;
+//       border-radius: 8px;
+//       width: 70px;
+//       height: 30px;
+//     }
+//   }
+// }
 </style>

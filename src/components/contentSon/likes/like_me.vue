@@ -3,14 +3,20 @@
         <div class="textInfo">
             <h4>我的粉丝</h4>
         </div>
-        <div class="likeme" v-for="(item , i) in likeme" :key="i">
-            <div class="avatar"><img :src="item.avatar" alt=""></div>
-            <div class="likemeInfo">
+        <div v-if="flag">
+            <div class="likeme" v-for="(item , i) in likeme" :key="i">
+                <div class="avatar"><img :src="item.avatar" alt=""></div>
+                <div class="likemeInfo">
                 <div class="box">
                     <div class="nickName"><router-link :to="{ name: 'home', params: { userId: item._id }}"><span>{{item.nickName}}</span></router-link>  <span class="time"> 从{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.likemeTime)))}}开始关注我</span> </div>
                     <div class="qianming">{{item.qianming}}</div>
                 </div>
             </div>
+            </div>
+        </div>
+        <div class="nothing" v-else>
+            <img src="../../../assets/img/暂无数据.png" alt="">
+            <div class="hint">暂时还没有粉丝哦</div>
         </div>
     </div>
 </template>
@@ -19,7 +25,8 @@ import formatTime from '../../../../util/util'
 export default {
     data() {
         return {
-            likeme:{}
+            likeme:{},
+            flag:true
         }
     },
     methods:{
@@ -31,7 +38,13 @@ export default {
             })
             .then( res => {
                 const {data:result} = res 
-                this.likeme = result.user 
+                if(result.user.length === 0){
+                    this.flag = false
+                }
+                else{
+                    this.flag = true
+                    this.likeme = result.user
+                }
             })
         }
     },
@@ -59,6 +72,18 @@ export default {
         // border-bottom: 1px solid rgb(235, 235, 235);
       }
     }
+.nothing{
+    text-align: center;
+    img{
+        width: 300;
+        height: 250px;
+    }
+    .hint{
+        font-size: 18px;
+        color: rgb(198, 55, 50);
+        font-weight: 600;
+    }
+}
 .likeme{
     display: flex;
     align-items: center;
