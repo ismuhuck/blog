@@ -23,7 +23,7 @@
           <div class="contentBody">
             <p>{{item.comment}}</p>
             <div class="reply-start">
-              <span class="time">{{item.commentTime}}</span>
+              <span class="time">{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.commentTime)))}}</span>
               <div class="action-box">
                 <i class="icon iconfont icon-dianzan"></i>
                 <span class="reply" @click="reply(item)">回复</span>
@@ -32,10 +32,10 @@
             <div class="reply-content" v-for="(replyItem,i) in item.reply" :key="i">
                 
               <p><span class="reply1">{{replyItem.userNickname}}</span>
-              <!-- <span class="huifu">回复</span>
-              <span class="reply0">{{replyItem.commentNickname}}：</span> -->
+              <span class="huifu">回复</span>
+              <span class="reply0">{{replyItem.commentNickname}}：</span>
               <span>{{replyItem.content}}</span></p>
-              <div class="replyson"><span>{{replyItem.replyTime}}</span><span class="reply" @click="reply(replyItem)">回复</span></div>
+              <div class="replyson"><span>{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(replyItem.replyTime)))}}</span><span class="reply" @click="reply(replyItem)">回复</span></div>
               <div class="contentFooter" v-if="showitemId === replyItem.commentID">
                 <div class="newcontent">
                   <textarea
@@ -44,10 +44,11 @@
                     rows="10"
                     class="comInput"
                     v-model="replycomment"
+                    :placeholder="placeholder"
                   ></textarea>
                 </div>
                 <div class="newbottom">
-                  <button class="commentBtn" @click="replyComment(item.commentID)">回复评论</button>
+                  <button class="commentBtn" @click="replycommentson(item.commentID,replyItem.commentID)">回复评论</button>
                 </div>
               </div>
             </div>
@@ -72,16 +73,19 @@
   </div>
 </template>
 <script>
+import formatTime from '../../../util/util'
 export default {
   data() {
     return {
       comment: "",
       replycomment: "",
-      showitemId:''
+      showitemId:'',
+      placeholder:''
     };
   },
   props: ["commentInfo"],
   methods: {
+    formatTime:formatTime,
     // 发表评论
     commentText() {
       let token = localStorage.getItem("Authorization");
@@ -112,14 +116,25 @@ export default {
         });
     },
     reply(item) {
-        console.log(item)
-        this.replycomment ="@"+item.nickName+"："
-        if(this.showitemId !==item.commentID){
+        if(item.reply){
+           this.placeholder ="@"+item.nickName+"："
+         if(this.showitemId !==item.commentID){
             this.showitemId=item.commentID
-        }
+          }
         else{
             this.showitemId =false
+          } 
         }
+        else{
+           this.placeholder ="@"+item.userNickname+"："
+           if(this.showitemId !==item.commentID){
+            this.showitemId=item.commentID
+          }
+        else{
+            this.showitemId =false
+          }
+        }
+        
     },
     replyComment(commentID){
         this.axios({
@@ -134,11 +149,34 @@ export default {
         .then( res => {
             const {data:result} = res
             this.$emit("getArticle");
-            console.log(result)
+            this.showitemId = false
+            this.replycomment = ""
         })
         .catch(err => {
             console.log(err)
         })
+    },
+    replycommentson(zhucommentID,commentID){
+      this.axios({
+        method:'post',
+        url:'commentsun',
+        data:{
+          replycontent:this.replycomment,
+          articleId: this.$route.params.articleId,
+          commentID:commentID,
+          zhucommentID:zhucommentID
+        }
+      })
+      .then( res => {
+        const{data:result} = res
+        this.$emit("getArticle");
+        this.showitemId = false
+        this.replycomment = ""
+        console.log(result)
+      })
+      .catch(err =>{
+        console.log(err)
+      })
     }
   }
 };
@@ -174,7 +212,7 @@ h4 {
         border-bottom: 1px solid rgb(235, 235, 235);
         padding-bottom: 10px;
         a {
-          color: rgb(198, 55, 50);
+          color: #FF3D2B;
         }
       }
       .contentBody {
@@ -187,7 +225,7 @@ h4 {
         }
         .reply {
           margin-left: 20px;
-          background-color: rgb(198, 55, 50);
+          background-color: #FF3D2B;
           color: #fff;
           font-size: 12px;
           padding: 0 5px;

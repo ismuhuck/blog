@@ -36,10 +36,10 @@ const routes = [
     path:'/forum',
     component:Content,
     children:[
-      {path:'default',component:Default},
-      {path:'year',component:Year},
-      {path:'week',component:Week},
-      {path:'mouth',component:Mouth},
+      {path:'default',component:Default,meta:{index:0}},//通过meta 指定自定义属性，这里通过index来用于表示索引，确保动画的过渡效果是有序的
+      {path:'year',component:Year,meta:{index:1}},
+      {path:'week',component:Week,meta:{index:2}},
+      {path:'mouth',component:Mouth,meta:{index:3}},
     ]
   },
   {
@@ -62,12 +62,12 @@ const routes = [
   {
     path:'/personal',component:Personal,redirect:'/personal/articles',
     children:[
-      {path:'focus',component:Focus},
-      {path:'like',component:Likeme},
-      {path:'collecting',component:Collecting},
-      {path:'articles',component:Articles_me},
+      {path:'focus',component:Focus,meta:{index:1}},
+      {path:'like',component:Likeme,meta:{index:3}},
+      {path:'collecting',component:Collecting,meta:{index:2}},
+      {path:'articles',component:Articles_me,meta:{index:0} },
       {path:'articlesInfo/:articleId/:userId',component:ArticlesInfo,name:'articlesInfo'},
-      {path:'likeArticle',component:LikeArticle}
+      {path:'likeArticle',component:LikeArticle,meta:{index:4}}
     ]
   },
   {

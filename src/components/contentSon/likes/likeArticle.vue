@@ -31,6 +31,7 @@ export default {
             this.axios.get('likeArticle')
             .then( res => {
                 const {data:result} = res
+                console.log(result)
                 if(result.likeArticle.length === 0){
                     this.flag = false
                 }

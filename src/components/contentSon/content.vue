@@ -9,7 +9,10 @@
           <router-link to="/forum/mouth">月榜</router-link>
           <router-link to="/forum/year">年榜</router-link>
         </h4>
-        <router-view></router-view>
+        <transition :name="transitionName" mode="out-in">
+          <router-view></router-view>
+        </transition>
+          
       </div>
       <div class="rightBox">
         <div class="showBox">
@@ -53,12 +56,51 @@
 export default {
   data() {
     return {
-      currentDate: new Date()
+      currentDate: new Date(),
+      transitionName:''
     };
+  },
+ watch: {
+  '$route' (to, from) {
+    // 通过监听路由变化判断具体执行哪个动画  可以通过路由的参数来获取到之前设置的索引，从而判断动画效果是向左还是向右
+    let toName = to.name
+    const toIndex = to.meta.index
+    const fromIndex = from.meta.index
+    this.transitionName = toIndex < fromIndex ? 'slide-right' : 'slide-left'
   }
+}
 };
 </script>
 <style lang="scss" scoped>
+// 动态路由过渡效果
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  will-change: transform;
+  transition: all 300ms;
+  position: absolute;
+}
+
+.slide-right-enter {
+  opacity: 0;
+  transform: translate(-100%, 0, 0);
+}
+
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate(100%, 0, 0);
+}
+
+.slide-left-enter {
+  opacity: 0;
+  transform: translate(100%, 0, 0);
+}
+
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translate(-100%, 0, 0);
+}
 .top {
   width: 1120px;
   height: 20px;

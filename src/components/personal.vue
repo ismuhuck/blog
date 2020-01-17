@@ -58,7 +58,9 @@
         </div>
     </div>
     <div class="perRight"> 
-      <router-view></router-view>
+      <transition :name="transitionName">
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -74,8 +76,16 @@ export default {
       user:{},
       likeme:0,
       focus:0,
-      shoucang:0
+      shoucang:0,
+      transitionName:'',
     };
+  },
+  watch:{
+    '$route'(to,from){
+      const toIndex = to.meta.index
+      const fromIndex = to.meta.index
+      
+    }
   },
   // 过滤器
   filters:{

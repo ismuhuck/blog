@@ -15,35 +15,12 @@
       <div class="discuss">
         <span>评论区</span>
       </div>
-      <div class="commentList"  v-for="(item, index) in commentInfo" :key="index">
-        <div class="comment">
-          <div class="avater">
-            <router-link to="/personal">
-              <img :src="item.avatar" alt="头像" />
-            </router-link>
-          </div>
-          <div class="content">
-            <h4>
-              <router-link to="/personal">{{item.nickName}}</router-link>
-            </h4>
-            <div class="contentBody">{{item.comment}}</div>
-            <div class="contentFooter"></div>
-          </div>
-        </div>
-      </div>
-      <div class="commentNew">
-        <div class="newtop">请勿发布不友善或者负能量的内容，与人为善，比聪明更重要</div>
-        <div class="newcontent">
-          <textarea name="commentArea" cols="30" rows="10" class="comInput" v-model="comment"></textarea>
-        </div>
-        <div class="newbottom">
-          <button class="commentBtn" @click="commentText">评论</button>
-        </div>
-      </div>
+       <commentarea :commentInfo="commentInfo" @getArticle='getArticle'></commentarea> 
   </div>
 </template>
 <script>
 import { log } from 'util';
+import commentarea from '../components/component/commentarea.vue'
 export default {
   data() {
     return {
@@ -54,6 +31,9 @@ export default {
       text:'',
       token:localStorage.getItem('Authorization'),
     };
+  },
+  components:{
+    commentarea
   },
   methods:{
     getArticle(){

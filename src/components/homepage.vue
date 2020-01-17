@@ -71,7 +71,6 @@ export default {
       })
       .then( res => {
         const {data:result} = res
-        console.log(result)
         if(result.code === 8){
           this.focusStatus = "已关注"
         }
@@ -100,7 +99,6 @@ export default {
         this.user=result.user
         this.id = result.user._id
         this.article = result.article
-        // console.log(article)
         this.commentInfo = result.comment
         return this.$message.success('数据请求成功')
       }
@@ -143,7 +141,6 @@ export default {
 		})
 		.then(res => {
       const {data:result} = res
-      console.log(result)
       if(result.code === 1){
         return this.$message.error('不可关注自己')
       }
@@ -174,7 +171,6 @@ export default {
     })
     .then(res => {
       const {data:result} = res
-      console.log(result)
     })
     .catch(err => {
       console.log(err)
