@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div>
         <div class="textInfo">
             <h4>我的粉丝</h4>
         </div>

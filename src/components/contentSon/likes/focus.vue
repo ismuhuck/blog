@@ -1,6 +1,6 @@
 <template>
 <!-- 我关注的 -->
-    <div class="container">
+    <div>
         <div class="textInfo">
             <h4>我的关注</h4>
         </div>

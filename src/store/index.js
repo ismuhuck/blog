@@ -3,9 +3,9 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+let store = new Vuex.Store({
   state: {
-    // Authorization: localStorage.getItem("Authorization") ? localStorage.getItem("Authorization") : ''
+    type:'all'
   },
   mutations: {
     // changeLogin(state, user) {
@@ -19,5 +19,9 @@ export default new Vuex.Store({
     //   ctx.commit('changeLogin', Authorization);
     // }
   },
+  getters:{
+    type:(state) => state.type
+  },
   modules: {}
 });
+export default store

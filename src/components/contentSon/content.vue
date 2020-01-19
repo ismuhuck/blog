@@ -63,7 +63,6 @@ export default {
  watch: {
   '$route' (to, from) {
     // 通过监听路由变化判断具体执行哪个动画  可以通过路由的参数来获取到之前设置的索引，从而判断动画效果是向左还是向右
-    let toName = to.name
     const toIndex = to.meta.index
     const fromIndex = from.meta.index
     this.transitionName = toIndex < fromIndex ? 'slide-right' : 'slide-left'
@@ -84,22 +83,22 @@ export default {
 
 .slide-right-enter {
   opacity: 0;
-  transform: translate(-100%, 0, 0);
+  transform: translate(-100%, 0);
 }
 
 .slide-right-leave-active {
   opacity: 0;
-  transform: translate(100%, 0, 0);
+  transform: translate(100%, 0);
 }
 
 .slide-left-enter {
   opacity: 0;
-  transform: translate(100%, 0, 0);
+  transform: translate(100%, 0);
 }
 
 .slide-left-leave-active {
   opacity: 0;
-  transform: translate(-100%, 0, 0);
+  transform: translate(-100%, 0);
 }
 .top {
   width: 1120px;

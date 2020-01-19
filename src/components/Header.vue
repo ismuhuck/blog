@@ -1,10 +1,8 @@
 <template>
   <div class="header">
-    <div class="headerbox">
-      <div class="search-box">
-        <input type="text" placeholder="搜索内容">
-        <i class="icon iconfont icon-bianji"></i>
-      </div>
+    <div class="header-box">
+      <div class="headerbox">
+      <search></search>
       <div class="logo">
         <!-- <img src="../assets/logo.jpg" alt="logo" /> -->
       </div>
@@ -96,12 +94,18 @@
         </li>
       </ul>
     </div>
+    </div>
+    
   </div>
 </template>
 <script>
 import { mapMutations } from "vuex";
 // import { log } from 'util';
+import search from '../components/component/search.vue'
 export default {
+  components:{
+    search
+  },
   data() {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
@@ -314,7 +318,8 @@ body {
     // z-index: 1;
     width: 100%;
     background-image: linear-gradient(rgb(207, 71, 66), rgb(198, 55, 50));
-    .headerbox {
+    .header-box{
+      .headerbox {
       margin: 0 auto;
       width: 1120px;
       height: 50px;
@@ -331,28 +336,6 @@ body {
           list-style: none;
           float: left;
           padding: 5px 10px;
-        }
-      }
-      .search-box{
-        line-height: 50px;
-        float: left;
-        position: relative;
-        input{
-          height: 30px;
-          width: 250px;
-          border: none;
-          outline: none;
-          border-radius: 5px;
-          color: rgb(75,75,75);
-          background: rgb(245,245,245);
-          padding: 5px 10px;
-          font-size: 14px;
-        }
-        i{
-          position: absolute;
-          right: 10px;
-          color: rgb(198, 55, 50);
-          cursor:pointer;
         }
       }
       .logo { 
@@ -426,6 +409,8 @@ body {
         }
       }
     }
+    }
+    
   }
   .modal-content {
     width: 400px;

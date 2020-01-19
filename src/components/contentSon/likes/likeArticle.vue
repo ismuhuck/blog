@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div>
         <div class="textInfo">
             <h4>我点赞的</h4>
         </div>
@@ -31,7 +31,6 @@ export default {
             this.axios.get('likeArticle')
             .then( res => {
                 const {data:result} = res
-                console.log(result)
                 if(result.likeArticle.length === 0){
                     this.flag = false
                 }

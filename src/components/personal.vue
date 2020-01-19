@@ -58,7 +58,7 @@
         </div>
     </div>
     <div class="perRight"> 
-      <transition :name="transitionName">
+      <transition :name="transitionName" mode="out-in">
         <router-view></router-view>
       </transition>
     </div>
@@ -80,13 +80,6 @@ export default {
       transitionName:'',
     };
   },
-  watch:{
-    '$route'(to,from){
-      const toIndex = to.meta.index
-      const fromIndex = to.meta.index
-      
-    }
-  },
   // 过滤器
   filters:{
     sexFilter(data){
@@ -101,12 +94,10 @@ export default {
   methods:{
     // 时间戳格式化方法
     formatTime:formatTime,
-
     // 关注的显示与隐藏
     likes_show(){
       this.likes = !this.likes
     },
-
     getUser(){
       this.axios({
         method:'get',
@@ -138,6 +129,13 @@ export default {
     });
     }
   },
+  watch:{
+    '$route'(to,from){
+      const toIndex = to.meta.index
+      const fromIndex = from.meta.index
+      this.transitionName = toIndex > fromIndex ? 'slidedown' : 'slideup'
+    }
+  },
   mounted(){
     this.getUser()
     this.getArticle()
@@ -145,11 +143,28 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.v-enter-active , .v-leave-active{
-  transition: opacity .5s
+.slidedown-enter-active,
+.slidedown-leave-active,
+.slideup-leave-active,
+.slideup-enter-active{
+  transition: all 300ms;
+  position: absolute;
 }
-.v-enter , .v-leave-to{
+.slideup-enter{
   opacity: 0;
+  transform: translate(0,-100%)
+}
+.slideup-leave-to{
+  opacity: 0;
+  transform: translate(0,100%)
+}
+.slidedown-enter{
+  opacity: 0;
+  transform: translate(0,100%)
+}
+.slidedown-leave-to{
+  opacity: 0;
+  transform: translate(0,-100%)
 }
 .personal {
   display: flex;

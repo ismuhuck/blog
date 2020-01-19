@@ -22,6 +22,10 @@ import Likeme from '../components/contentSon/likes/like_me.vue'
 import Collecting from "../components/contentSon/likes/collecting.vue"
 import Articles_me from "../components/contentSon/likes/articles_me.vue"
 import LikeArticle from "../components/contentSon/likes/likeArticle.vue"
+import Search from "../views/search-view.vue"
+import Searcharticles from "../views/search/articles.vue"
+import Searchuser from "../views/search/user.vue"
+import Searchall from "../views/search/all.vue"
 // import Homepage from "../views/focus_user.vue"
 Vue.use(VueRouter);
 const routes = [
@@ -31,6 +35,15 @@ const routes = [
   },
   {
     path:"/detalis",
+  },
+  {
+    path:'/search',
+    component:Search,
+    children:[
+      {path:'all',component:Searchall},
+      {path:'articles',component:Searcharticles},
+      {path:'user',component:Searchuser}
+    ]
   },
   {
     path:'/forum',
@@ -84,22 +97,27 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode:'history'//vue默认使用hash 使用history模式会去掉url中的#
 });
-const whiteList = ['/','/detalis','/forum/default','/articles','/about','/editor','/forum/week','/forum/mouth','/forum/year']
+// 添加路由守卫
+const blackList = ['/editor','/personal/articles','/personal','/personal/focus','/personal/collecting','/personal/like','/personal/likeArticle','/edit/editInfo','/edit/edit_ava','/edit/edit_password']
 router.beforeEach((to,from, next) =>{
-  if(whiteList.indexOf(to.path) !== -1 ){
-    next()
-  }
-  else{
+  if(blackList.indexOf(to.path) !== -1){
     let token = localStorage.getItem('Authorization')
-    if(token === null || token ===''){
+    if(token === null || token ===""){
+      if(to.path === '/editor'){
+        alert('登录后才能发表文章')
+      }
       next('/')
     }
     else{
       next()
     }
   }
+  else(
+    next()
+  )
 })
 
 export default router;

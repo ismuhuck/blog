@@ -64,6 +64,9 @@ export default {
     // 获取关注状态
 
     getfocusStatus(){
+       if(!this.token){
+        return 
+      }
       this.axios.get('facusStatus',{
         params:{
           userId:this.$route.params.userId

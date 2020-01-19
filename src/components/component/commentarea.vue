@@ -80,7 +80,8 @@ export default {
       comment: "",
       replycomment: "",
       showitemId:'',
-      placeholder:''
+      placeholder:'',
+      token:localStorage.getItem('Authorization')
     };
   },
   props: ["commentInfo"],
@@ -116,6 +117,9 @@ export default {
         });
     },
     reply(item) {
+        if(!this.token){
+          return this.$message.warning('您只有登录后才能进行评论回复')
+        }
         if(item.reply){
            this.placeholder ="@"+item.nickName+"："
          if(this.showitemId !==item.commentID){
