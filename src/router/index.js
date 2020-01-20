@@ -39,10 +39,17 @@ const routes = [
   {
     path:'/search',
     component:Search,
+    // children:[
+    //   {path:'all',component:Searchall,name:'searchall'},
+    //   {path:'articles',component:Searcharticles,name:'searcharticles'},
+    //   {path:'user',component:Searchuser,name:'searchuser'}
+    // ]
     children:[
-      {path:'all',component:Searchall},
-      {path:'articles',component:Searcharticles},
-      {path:'user',component:Searchuser}
+      {path:'',components:{
+        all:Searchall,
+        articles:Searcharticles,
+        user:Searchuser
+      }}
     ]
   },
   {

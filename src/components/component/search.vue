@@ -1,39 +1,36 @@
 <template>
   <div class="search-box">
-    <input type="text" placeholder="搜索内容" v-model="searchText" />
+    <input type="text" placeholder="搜索内容" v-model="searchtext" />
     <i @click="search" class="icon iconfont icon-bianji"></i>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
+import { mapMutations } from "vuex"
 export default {
 	computed: {
-    ...mapGetters(["type"])
+    ...mapGetters(["type"]),
+    // 因为v-model是双向绑定数据，所以使用它时应该设置set
+    searchtext:{
+      get(){
+        return this.$store.state.searchtext
+      },
+      set(newval){
+        this.changesearch(newval)
+      }
+    }
   },
   data() {
-    return {
-      searchText: ""
-    };
+    return { };
   },
   methods: {
+    ...mapMutations(['changesearch']),
     search() {
-			if(this.searchText.trim() === ""){
-				this.searchText=""
+			if(this.searchtext.trim() === ""){
+				this.searchtext=""
 				return false
 			}
-      this.axios.post("search", {
-          data: {
-            searchText: this.searchText
-          }
-        })
-        .then(res => {
-          const { data: result } = res;
-          console.log(result);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-			this.$router.push({path:'/search',query:{search:this.searchText,type:this.type}})
+			this.$router.push({path:'/search',query:{search:this.searchtext,type:this.type}})
     }
   },
   

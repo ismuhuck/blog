@@ -5,14 +5,17 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
   state: {
-    type:'all'
+    type:'all',
+    searchtext:''
   },
   mutations: {
-    // changeLogin(state, user) {
-    //   state.Authorization = user.Authorization;
-    //   console.log('运行至此store');
-    //   localStorage.setItem('Authorization', user.Authorization);
-    // }
+    changesearch(state,newsearch){
+      state.searchtext = newsearch
+    },
+    changetype(state,newtype){
+      state.type = newtype
+      // console.log(newtype)
+    }
   },
   actions: {
     // changeLogin(ctx, Authorization) {
@@ -20,7 +23,8 @@ let store = new Vuex.Store({
     // }
   },
   getters:{
-    type:(state) => state.type
+    type:(state) => state.type,
+    searchtext:(state) => state.searchtext
   },
   modules: {}
 });
