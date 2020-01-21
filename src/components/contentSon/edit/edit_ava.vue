@@ -10,15 +10,6 @@
       <p>请上传正常的人物头像，真人或卡通皆可。</p>
       <p>上传闪烁、奇异、违法、色情头像，情节严重者将会被禁言处理。</p>
     </div>
-    <!-- <form action>
-      <div class="onloadAta">
-        <label for="avatar">请上传图片：</label>
-        <input type="file" name="avatar" id="avatar" />
-      </div>
-    </form>
-    <div class="btnBox">
-      <button type="submit" class="onloadBtn" @click.prevent="uploadAva">上传头像</button>
-    </div> -->
     <div class="avataText">
       点击下方原始头像上传新头像
     </div>

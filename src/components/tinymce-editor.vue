@@ -3,7 +3,8 @@
     <editor v-model="myValue"
       :init="init"
       :disabled="disabled"
-      @onClick="onClick">
+      @onClick="onClick"
+      >
     </editor>
   </div>
 </template>
@@ -51,9 +52,9 @@ export default {
       init: {
         language_url: `${this.baseUrl}/tinymce/langs/zh_CN.js`,
         language: 'zh_CN',
-        skin_url: `${this.baseUrl}/tinymce/skins/ui/oxide`,
-        content_css: `${this.baseUrl}/tinymce/skins/content/default/content.css`,
-        // skin_url: `${this.baseUrl}/tinymce/skins/ui/oxide-dark`, // 暗色系
+        // skin_url: `${this.baseUrl}/tinymce/skins/ui/oxide`,
+        // content_css: `${this.baseUrl}/tinymce/skins/content/default/content.css`,
+        skin_url: `${this.baseUrl}/tinymce/skins/ui/oxide-dark`, // 暗色系
         // content_css: `${this.baseUrl}/tinymce/skins/content/dark/content.css`, // 暗色系
         height: 600,
         width:860,
@@ -64,10 +65,17 @@ export default {
         // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
         // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
         images_upload_handler: (blobInfo, success) => {
-          
-          const img = 'http://localhost:5000/imgs/ata.jpg'
-          console.log(img)
-          success(img)
+          let formdata = new FormData()
+					formdata.append("file",blobInfo.blob())
+					this.axios.post('uploadImg',formdata)
+					.then((res) => {
+						if (res.data.code == 200) {
+							success(res.data.msg)
+						} else {
+							failure('上传失败!')
+						}
+						
+					})
         }
       },
       myValue: this.value

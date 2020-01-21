@@ -1,34 +1,65 @@
 <template>
   <div class="articles">
     <!-- 文章列表{{articleslist}} -->
-    <div class="box" v-for="(item,index) in articleslist" :key="index">
-      <div class="author">
-        <img src="../../assets/../../头像/1.jpg" alt />
-        <span class="nickName">猪八戒</span>
-        <span class="createTime">2018-10-10 10:10</span>
-      </div>
-      <div class="articles">
-        <div class="title">{{item.blogTitle}}</div>
-        <div class="content" v-html="item.content"></div>
-        <div class="like">
-          <span class="icon iconfont icon-dianzan hudong" title="点赞数">
-            <span>1</span>
-          </span>
-          <span class="icon iconfont icon-xinxi hudong" title="评论数">
-            <span>222</span>
-          </span>
+    <div v-if="flag">
+      <div class="box" v-for="(item,index) in articleslist" :key="index">
+        <div class="author">
+          <img :src="item.avatar" alt />
+          <span class="nickName">猪八戒</span>
+          <span
+            class="createTime"
+          >{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.createTime)))}}</span>
+        </div>
+        <div class="articles">
+          <div class="title">
+            <router-link
+              :to="{name:'articles',params:{articleId:item._id,userId:item.userId}}"
+            >{{item.blogTitle}}</router-link>
+          </div>
+          <div class="content" v-html="item.content"></div>
+          <div class="like">
+            <span class="icon iconfont icon-dianzan hudong" title="点赞数">
+              <span>{{item.likeNum}}</span>
+            </span>
+            <span class="icon iconfont icon-xinxi hudong" title="评论数">
+              <span>{{item.commentNum}}</span>
+            </span>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="nothing" v-else>
+      <img src="../../assets/img/暂无数据.png" alt />
+      <div class="hint">暂时还没有相关文章</div>
     </div>
   </div>
 </template>
 <script>
+import formatTime from "../../../util/util";
 export default {
   props: ["list"],
   data() {
     return {
-      articleslist: this.list.article
+      articleslist: [],
+      flag: true
     };
+  },
+  watch: {
+    // this未定义
+    // 'list':(newval,oldval) => {
+    //   this.articleslist = newval.article
+    // }
+    list: function(newval, oldval) {
+      if (newval.article.length === 0) {
+        this.flag = false;
+      } else {
+        this.flag = true;
+        this.articleslist = newval.article;
+      }
+    }
+  },
+  methods: {
+    formatTime: formatTime
   }
 };
 </script>
@@ -60,8 +91,10 @@ export default {
       .title {
         font-size: 17px;
         font-weight: 600;
-        color: #2e3135;
         margin: 6px 0 12px;
+        // a{
+        //   color: #2e3135;
+        // }
       }
       .content {
         font-size: 13px;
@@ -80,6 +113,18 @@ export default {
           }
         }
       }
+    }
+  }
+  .nothing {
+    text-align: center;
+    img {
+      width: 300;
+      height: 250px;
+    }
+    .hint {
+      font-size: 18px;
+      color: rgb(198, 55, 50);
+      font-weight: 600;
     }
   }
 }

@@ -1,38 +1,57 @@
 <template>
     <div class="users">
         <!-- 用户列表{{userlist}} -->
-        <div class="white" v-if="flag">
-            没有相关用户
-        </div>
-        <div class="user" v-for="(item,index) in userlist" :key="index" v-else>
+        <div v-if="flag">
+            <div class="user" v-for="(item,index) in userlist" :key="index">
             <div class="avatar">
                 <img :src="item.avatar" alt="">
             </div>
             <div class="info">
-                <div class="nickName">{{item.nickName}}</div>
-                <div class="detail"><span class="articlescount">32篇文章</span><span class="likeme">25位粉丝</span></div>
+                <div class="nickName"><router-link :to="{ name: 'home', params: { userId: item._id }}"> {{item.nickName}} </router-link></div>
+                <div class="detail"><span class="articlescount">{{item.articleNum}}篇文章</span><span class="likeme">{{item.likemeNum}}位粉丝</span></div>
             </div>
             <div class="focus">
                 <button>关注</button>
             </div>
+            </div>
+        </div>
+        <div class="nothing" v-else>
+            <img src="../../assets/img/暂无数据.png" alt="">
+            <div class="hint">暂时还没有相关用户</div>
         </div>
     </div>
 </template>
 <script>
+import formatTime from '../../../util/util'
 export default {
     props:['list'],
     data() {
         return {
             userlist:this.list.user,
-            flag:''
+            flag:true
         }
     },
-    created(){
-        if(this.userlist.length === 0){
-            this.flag = true
-        }
-        else{
-            this.flag = false
+    watch: {
+        "list":function(newval,oldval){
+            if(newval.user.length === 0){
+                this.flag = false
+                }
+            else{
+                this.flag = true
+                this.userlist = newval.user
+            }
+        },
+    },
+    methods:{
+        formatTime:formatTime,
+        init(){
+            if(result.collecting.length === 0){
+                    this.flag = false
+                }
+            else{
+                this.flag = true
+                this.collecting = result.collecting
+            }
         }
     }
 }
@@ -77,5 +96,17 @@ export default {
             }
         }
     }
+    .nothing{
+    text-align: center;
+    img{
+        width: 300;
+        height: 250px;
+    }
+    .hint{
+        font-size: 18px;
+        color: rgb(198, 55, 50);
+        font-weight: 600;
+    }
+}
 }
 </style>

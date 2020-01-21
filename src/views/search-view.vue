@@ -4,19 +4,22 @@
       <header class="sort-banner">
         <div class="nav-banner">
           <ul class="nav-list">
-			<router-link :to="{path:'search',query:{search:searchtext,type:'all'}}" tag="li" class="nav-item"><a>全部</a></router-link>
-			<router-link :to="{path:'search',query:{search:searchtext,type:'articles'}}" tag="li" class="nav-item"><a>文章</a></router-link>
-			<router-link :to="{path:'search',query:{search:searchtext,type:'user'}}" tag="li" class="nav-item"><a>用户</a></router-link>
-			<!-- <router-link to="/search?type=all" tag="li" class="nav-item"><a>全部</a></router-link>
-			<router-link to="/search?type=articles" tag="li" class="nav-item"><a>文章</a></router-link>
-			<router-link to="/search?type=user" tag="li" class="nav-item"><a>用户</a></router-link> -->
+            <router-link :to="{path:'search',query:{search:searchtext,type:'all'}}" tag="li" class="nav-item">
+              <a>全部</a>
+            </router-link>
+            <router-link :to="{path:'search',query:{search:searchtext,type:'articles'}}" tag="li" class="nav-item">
+              <a>文章</a>
+            </router-link>
+            <router-link :to="{path:'search',query:{search:searchtext,type:'user'}}" tag="li" class="nav-item">
+              <a>用户</a>
+            </router-link>
           </ul>
         </div>
       </header>
     </nav>
     <div class="list">
       <div class="result-list">
-	  	<router-view :name="nameviews" :list="searchlist"></router-view>
+        <router-view :name="nameviews" :list="searchlist" @formatTime="formatTime"></router-view>
       </div>
     </div>
   </div>
@@ -24,42 +27,46 @@
 <script>
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
-import formatTime from "../../util/util"
+import formatTime from "../../util/util";
 export default {
   computed: {
     ...mapGetters(["searchtext"])
   },
   data() {
     return {
-		// search_user:[],
-		// search_articles:[],
-		searchlist:[],
-		nameviews:''
-	};
+      searchlist: [],
+      nameviews: "",
+      viewName: ""
+    };
+  },
+  beforeRouteEnter(to, from, next) {
+    // 由于beforeRouteUpdate 只在组件内的路由发生变化时才会监听到，无法获取到刚跳转至该组件时的type属性值，
+    // 又因为beforeRouterEnter触发时该组件实例还没有被创建，所以在next中传递一个回调函数，以获取到组件实例
+    let query = to.query;
+    next(vm => {
+      vm.nameviews = query.type;
+    });
   },
   beforeRouteUpdate(to, from, next) {
-	let name = to.query.type
-	this.nameviews = name
+    let name = to.query.type;
+    this.nameviews = name;
+    this.init();
     next();
   },
-  created(){
-	  this.init()
+  created() {
+    this.init();
   },
   methods: {
-	formatTime:formatTime,
+    formatTime: formatTime,
     ...mapMutations(["changesearch", "changetype"]),
     init() {
-      let query = this.$route.query;
-	  let name = query.type;
-	  this.nameviews = name
-	  
-      this.axios.post("search", {
+      this.axios
+        .post("search", {
           searchtext: this.searchtext
         })
         .then(res => {
-		  const { data: result } = res;
-		  this.searchlist = result
-          console.log(result);
+          const { data: result } = res;
+          this.searchlist = result;
         })
         .catch(err => {
           console.log(err);

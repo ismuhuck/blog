@@ -26,7 +26,6 @@ export default {
             .then( res => { 
                 const {data:result} = res 
                 this.articles = result.articles
-                console.log(result)
             })
         }
     },

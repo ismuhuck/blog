@@ -13,7 +13,6 @@
           <span class="span5">{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.createTime)))}}</span>
         </span>
       </router-link>
-      
     </div>
   </div>
 </template>
