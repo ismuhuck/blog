@@ -11,6 +11,7 @@
 <script>
 import tinymce from 'tinymce/tinymce'
 import Editor from '@tinymce/tinymce-vue'
+// import {uploadImage} from "../../util/uploadImage"
 import 'tinymce/themes/silver'
 // 编辑器插件plugins
 // 更多插件参考：https://www.tiny.cloud/docs/plugins/
@@ -64,18 +65,20 @@ export default {
         menubar: false,
         // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
         // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
-        images_upload_handler: (blobInfo, success) => {
-          let formdata = new FormData()
-					formdata.append("file",blobInfo.blob())
-					this.axios.post('uploadImg',formdata)
-					.then((res) => {
-						if (res.data.code == 200) {
-							success(res.data.msg)
-						} else {
-							failure('上传失败!')
-						}
-						
-					})
+        images_upload_handler:async (blobInfo, success,failure) => {
+          // 直接上传base64 编码的图片
+          // const img = 'data:image/jpeg;base64,' + blobInfo.base64();
+          // success(img)
+          let formData = new FormData();
+          formData.append('file',blobInfo.blob(),blobInfo.filename());
+
+          let imgData = await this.uploadImage(formData)
+          if(imgData.data.status ===200){
+            success(imgData.data.data.priview_url)
+          }else{
+            failure(imgData.data.info)
+            return
+          }
         }
       },
       myValue: this.value
@@ -93,7 +96,11 @@ export default {
     // 可以添加一些自己的自定义事件，如清空内容
     clear () {
       this.myValue = ''
-    }
+    },
+    uploadImage(params){
+    //注意修改Content-Type文件类型，"multipart/form-data"表示表单中进行文件上传 
+    return this.axios.post('uploadImg',params,{'Content-Type':'multipart/form-fata'})
+}
   },
   watch: {
     value (newValue) {
