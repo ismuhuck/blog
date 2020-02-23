@@ -39,7 +39,6 @@ export default {
     .then((res) =>{
       const {data:result} = res
       this.summary = result.article
-      console.log(this.summary)
     })
     .catch(err =>{
       console.log(err)

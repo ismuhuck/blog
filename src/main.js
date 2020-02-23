@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "jquery/dist/jquery";
 import "bootstrap/dist/js/bootstrap.js";
 import "./assets/css/global.css"
-import "./assets/form/iconfont.css"
+import "./assets/css/iconfont.css"
 
 // import "./css/font-awesome.min.css"
 // import "tinymce/skins"

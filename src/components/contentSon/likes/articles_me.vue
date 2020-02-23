@@ -9,9 +9,9 @@
             <router-link :to='{name:"articlesInfo",params:{articleId:item._id,userId:item.userId}}'>{{item.blogTitle}}<i class="icon iconfont icon-daohang"></i></router-link>
           </div>
           <div class="blogRight">
-            <span class="icon iconfont icon-dianzan" title="点赞数"><span>{{item.like.length}}</span> </span>
-            <span class="icon iconfont icon-xinxi" title="评论数" ><span>{{item.comment.length}}</span> </span>
-            <span class="icon iconfont icon-set" @click="deleted(item._id)" title="删除" ></span>
+            <span class="icon iconfont icon-z-like" title="点赞数"><span>{{item.like.length}}</span> </span>
+            <span class="icon iconfont icon-pinglun" title="评论数" ><span>{{item.comment.length}}</span> </span>
+            <span class="icon iconfont icon-iconfontshanchu4" @click="deleted(item._id)" title="删除" ></span>
           </div>
         </div>
         <div class="blogBottom">

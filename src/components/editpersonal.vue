@@ -2,9 +2,9 @@
     <div class="editPersonal">
         <div class="editLeft">
             <div class="editBox">
-                <div class="edit"><router-link to="/edit/editInfo"><i class="icon iconfont icon-tuichu"></i> 个人信息</router-link> </div>
-                <div class="edit_ava"><router-link to="/edit/edit_ava"><i class="icon iconfont icon-bi"></i> 修改头像</router-link> </div>
-                <div class="editPassword"><router-link to="/edit/edit_password"><i class="icon iconfont icon-bi"></i>修改密码</router-link> </div>
+                <div class="edit"><router-link to="/edit/editInfo"><i class="icon iconfont icon-gerenxinxi"></i> 个人信息</router-link> </div>
+                <div class="edit_ava"><router-link to="/edit/edit_ava"><i class="icon iconfont icon-icon32"></i> 修改头像</router-link> </div>
+                <div class="editPassword"><router-link to="/edit/edit_password"><i class="icon iconfont icon-mima1"></i>修改密码</router-link> </div>
             </div>
         </div>
         <div class="editRight">

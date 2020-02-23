@@ -36,7 +36,7 @@ export default {
   },
   data() {
     return {
-      content: "Welcome to Use Tinymce Editor",
+      content: "图片最大上传宽度请不要超过750px，超出后会被裁剪",
       disabled: false,
       blogTitle:''
     };
@@ -55,8 +55,12 @@ export default {
     },
     createArticle(){
       var token = localStorage.getItem('Authorization')
+      let status = localStorage.getItem('statusCode')
       if(!token){
         return this.$message.warning('您还未登录，请登录后发表');
+      }
+      if(status != 0){
+        return this.$message.error('因为近期发表了不当言论，你已被禁言')
       }
       if(this.content.trim()==='' || this.blogTitle.trim()===''){
         return this.$message.warning('文章或标题不能为空')

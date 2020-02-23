@@ -62,7 +62,7 @@
           </a>
           <div class="dropdown" v-if="dropdown">
             <div class="myBlog">
-              <i class="icon iconfont icon-bokeyuan"></i>
+              <i class="icon iconfont icon-14"></i>
               <span>
                 <router-link to="/personal">我的论坛</router-link>
               </span>
@@ -206,6 +206,16 @@ export default {
             this.$message.success('登录成功')
             this.login_dialog=false
             }
+            else if(result.code === 100){
+              console.log(result.msg)
+              this.$message.error(result.msg)
+            }
+            else if(result.code ===200){
+              this.$message.error(result.msg)
+            }
+            else if(result.code ===300){
+              this.$message.error(result.msg)
+            }
             else{
               this.$message.error('邮箱或密码错误，登录失败');
             }
@@ -297,13 +307,28 @@ export default {
     // 退出登录
     exitLogin(){
       localStorage.removeItem('Authorization')
+      this.$router.push('/')
       var _this = this
       _this.getToken(_this)
+    },
+    getStatus(){
+      this.axios.get('getStatus')
+      .then( res => {
+        const {data:result} =res
+        localStorage.setItem('statusCode',result.statusCode)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   },
   created(){
     var _this = this
     _this.getToken(_this)
+    let token = localStorage.getItem('Authorization')
+    if(token){
+      this.getStatus()
+    }
   }
 };
 </script>

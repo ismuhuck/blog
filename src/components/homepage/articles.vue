@@ -219,6 +219,9 @@ export default {
       color: rgb(75,75,75)
     }
   }
+  .content{
+    overflow: hidden;
+  }
 }
 .like {
   width: 785px;

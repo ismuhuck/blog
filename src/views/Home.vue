@@ -5,22 +5,18 @@
       <div class="contentLeft">
         <div class="newlist" v-for="(item,index) in list" :key="index">
           <div class="list_box">
-            <h4>{{ item.newTitle }}</h4>
+            <h4>{{ item.title }}</h4>
             <ul class="seeinfo">
-              <li class="author">{{ item.newName }}</li>
-              <li class="time">发表于{{ item.newTime }}</li>
-              <li class="comment"><i class="icon iconfont icon-xinxi"> {{ item.commentNum }}</i></li>
-              <li class="watch"><i class="icon iconfont icon-yanjing">{{ item.watchNum }}</i> </li>
+              <li class="author">{{ item.nickName }}</li>
+              <li class="time">发表于{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.createTime)))}}</li>
+              <li class="comment"><i class="icon iconfont icon-pinglun"> {{ item.commentNum }}</i></li>
+              <li class="watch"><i class="icon iconfont icon-z-like">{{ item.likeNum }}</i> </li>
             </ul> 
-            <div class="pic">
-              <a href="#">
-                <img :src="item.imgSrc" alt="手机" />
-              </a>
+            <div class="pic" v-html="item.content">
             </div>
             <p>
-              {{ item.newSmall }}
               <span>
-                <router-link to="/index/details">查看全文</router-link>
+                <router-link :to="{name:'articles',params:{articleId:item._id,userId:item.userId}}">查看全文</router-link>
               </span>
             </p>
           </div>
@@ -70,43 +66,34 @@
   </div>
 </template>
 <script>
+import formatTime from '../../util/util'
 export default {
   data() {
     return {
-      list:[
-        {
-          newTitle:'华为今日发布华为matepad',
-          newName:'华为官方',
-          newTime:'2019-11-16',
-          watchNum:'11112',
-          commentNum:'2121',
-          imgSrc: require('../assets/pic1.jpg'),
-          newSmall:'华为mate30搭载了海思麒麟990芯片'
-        },
-        {
-          newTitle:'华为今日发布华为matepad',
-          newName:'华为官方',
-          newTime:'2019-11-16',
-          watchNum:'11112',
-          commentNum:'2121',
-          imgSrc: require('../assets/pic1.jpg'),
-          newSmall:'华为mate30搭载了海思麒麟990芯片'
-        },
-      ]
+      list:[]
     }
   },
   methods:{
-    submitFun(){
+    formatTime:formatTime,
+    getHotlist(){
       this.axios(
         {
           method: "get",
-          url: "http://localhost:5000/api/",
+          url: "hot",
+          params:{
+            time:new Date().getTime()
+          }
         }
       ).then(res => {
-        console.log(res);
+        const {data:result} = res
+        this.list = result.article
+        console.log(result)
         
       })
     }
+  },
+  created(){
+    this.getHotlist()
   }
 };
 </script>
@@ -126,7 +113,7 @@ export default {
      display: flex;
     .contentLeft {
       width: 784px;
-      background-color: rgb(245, 245, 245);
+      // background-color: rgb(245, 245, 245);
       border-radius: 8px;
       .newlist {
         background-color: #fff;
@@ -165,15 +152,16 @@ export default {
               margin-right: 20px;
             }
           }
-          .pic1 {
+          .pic {
             width: 725px;
             height: 300px;
-            a {
-              img {
-                width: 725px;
-                height: 300px;
-              }
-            }
+            overflow: hidden;
+            // a {
+            //   img {
+            //     width: 725px;
+            //     height: 300px;
+            //   }
+            // }
           }
           p {
             margin-top: 10px;
@@ -183,7 +171,6 @@ export default {
               a {
                 text-decoration: none;
                 color: rgb(198, 55, 50);
-                margin-left: 20px;
               }
             }
           }

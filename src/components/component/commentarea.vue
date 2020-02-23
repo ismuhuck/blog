@@ -81,7 +81,8 @@ export default {
       replycomment: "",
       showitemId:'',
       placeholder:'',
-      token:localStorage.getItem('Authorization')
+      token:localStorage.getItem('Authorization'),
+      statusCode:localStorage.getItem('statusCode')
     };
   },
   props: ["commentInfo"],
@@ -90,8 +91,12 @@ export default {
     // 发表评论
     commentText() {
       let token = localStorage.getItem("Authorization");
+      console.log(this.statusCode)
       if (!token) {
         return this.$message.error("您尚未登录，请登录后评论");
+      }
+      if(this.statusCode != 0){
+        return this.$message.error('因为近期发表了不当言论，你已被禁言')
       }
       if (this.comment.trim() === "") {
         return this.$message.error("不能发表空评论");
@@ -119,6 +124,9 @@ export default {
     reply(item) {
         if(!this.token){
           return this.$message.warning('您只有登录后才能进行评论回复')
+        }
+        if(this.statusCode != 0){
+          return this.$message.error('因为近期发表了不当言论，你已被禁言')
         }
         if(item.reply){
            this.placeholder ="@"+item.nickName+"："

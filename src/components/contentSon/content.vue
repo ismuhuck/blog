@@ -18,12 +18,12 @@
         <div class="showBox">
           <h4>五角的雪花科技论坛</h4>
           <div class="showcont">
-            Vue.js（/vjuː/，简称 Vue）是一个用于创建用户界面或者单页面应用的开源 JavaScript 框架。
-            2016 年 Vue 有着 89% 的 JS 开发者满意度。为 GitHub 有史以来星标数第 3 多的项目
+            五角的雪花科技论坛是一个分享科技与技术的平台，不断更新每日技术资讯，分享最前沿的技术，一起成长和进步
           </div>
           <div class="butt">
-            <button class="btn btn1">加入社区</button>
-            <button class="btn btn2">发帖</button>
+            <!-- <button class="btn btn1">加入社区</button> -->
+            <router-link to="/editor"><button class="btn btn2">发帖</button></router-link>
+            
           </div>
         </div>
         <a href>

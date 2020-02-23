@@ -73,8 +73,9 @@ export default {
           formData.append('file',blobInfo.blob(),blobInfo.filename());
 
           let imgData = await this.uploadImage(formData)
+          console.log(imgData)
           if(imgData.data.status ===200){
-            success(imgData.data.data.priview_url)
+            success(imgData.data.uploadImg.imgInfo.priview_url)
           }else{
             failure(imgData.data.info)
             return

@@ -1,7 +1,7 @@
 <template>
   <div class="search-box">
     <input type="text" placeholder="搜索内容" v-model="searchtext" />
-    <i @click="search" class="icon iconfont icon-bianji"></i>
+    <i @click="search" class="icon iconfont icon-sousuo"></i>
   </div>
 </template>
 <script>

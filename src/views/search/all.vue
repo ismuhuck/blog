@@ -117,6 +117,8 @@ export default {
       font-size: 13px;
       color: #5b6169;
       margin-bottom: 12px;
+      height: 50px;
+      overflow: hidden;
     }
     .like {
       span.hudong {
