@@ -26,6 +26,7 @@ import Search from "../views/search-view.vue"
 import Searcharticles from "../views/search/articles.vue"
 import Searchuser from "../views/search/user.vue"
 import Searchall from "../views/search/all.vue"
+import EditArticle from '../components/contentSon/edit/editArticle.vue'
 // import Homepage from "../views/focus_user.vue"
 Vue.use(VueRouter);
 const routes = [
@@ -35,6 +36,11 @@ const routes = [
   },
   {
     path:"/detalis",
+  },
+  {
+    path:'/editArticle',
+    name: "editArticle",
+    component: EditArticle
   },
   {
     path:'/search',
@@ -100,6 +106,13 @@ const routes = [
   },
   {
     path:'/about',component:About
+  },
+  {
+    path:'/inform',component:() =>import('../views/inform.vue')
+  },
+  {
+    path: '*',
+    component:() => import('../views/notFound.vue')
   }
 ];
 

@@ -18,10 +18,10 @@
           </div>
           <div class="content" v-html="item.content"></div>
           <div class="like">
-            <span class="icon iconfont icon-dianzan hudong" title="点赞数">
+            <span class="icon iconfont icon-z-like hudong" title="点赞数">
               <span>{{item.likeNum}}</span>
             </span>
-            <span class="icon iconfont icon-xinxi hudong" title="评论数">
+            <span class="icon iconfont icon-pinglun hudong" title="评论数">
               <span>{{item.commentNum}}</span>
             </span>
           </div>

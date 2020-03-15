@@ -8,7 +8,7 @@
       <div class="content" v-html="article.content"></div>
     </div>
     <div class="like">
-      <i class="icon iconfont icon-dianzan" @click="like" :class="likeArticleflag ? likeactive :unlikeactive"></i>
+      <i class="icon iconfont icon-z-like" @click="like" :class="likeArticleflag ? likeactive :unlikeactive"></i>
       <span>当前有人{{likeList.length}}点赞</span>
       <div class="dianzanAva" v-for="(item,i) in likeList" :key="i">
         <img :src="item" alt />

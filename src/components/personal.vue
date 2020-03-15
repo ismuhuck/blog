@@ -261,10 +261,12 @@ export default {
               font-size: 15px
             }
             a.router-link-active::after{
-              content: '\e60b';
+              content: '--';
               font-family: "iconfont";
               display: inline-block;
-              margin-left: 10px
+              margin-left: 10px;
+              -webkit-font-smoothing: antialiased;
+              -moz-osx-font-smoothing: grayscale;
             }
         }
         li:hover{

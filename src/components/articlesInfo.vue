@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
       <div class="textInfo">
         <h4>{{article.title}}</h4>
         <div class="content" v-html="article.content">

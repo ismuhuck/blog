@@ -12,6 +12,7 @@
             <span class="icon iconfont icon-z-like" title="点赞数"><span>{{item.like.length}}</span> </span>
             <span class="icon iconfont icon-pinglun" title="评论数" ><span>{{item.comment.length}}</span> </span>
             <span class="icon iconfont icon-iconfontshanchu4" @click="deleted(item._id)" title="删除" ></span>
+            <span class="icon iconfont icon-bianji"> <router-link :to='{name:"editArticle",params:{articleId:item._id}}'>编辑</router-link></span>
           </div>
         </div>
         <div class="blogBottom">
@@ -129,6 +130,11 @@ export default {
                 border-radius: 5px;
                 margin-right: 10px;
                 color: rgb(198, 55, 50);
+                a{
+                  color:rgb(198, 55, 50) ;
+                  font-size: 14px;
+                  margin-left: 5px;
+                }
                 span{
                   margin-left: 10px;
                   margin-right: 0;

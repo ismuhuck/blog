@@ -92,6 +92,7 @@
         <li>
           <router-link to="/editor">编辑</router-link>
         </li>
+        <li><router-link class="message" tag="div" to="/inform"><i class="icon iconfont icon-youxiang"></i><span>{{msgcount}}</span></router-link> </li>
       </ul>
     </div>
     </div>
@@ -173,6 +174,7 @@ export default {
       isopacity: "0.5",
       register_dialog:false,
       login_dialog:false,
+      msgcount:'',
       userInfo:{
         nickName:'',
         avatar:''
@@ -296,6 +298,7 @@ export default {
           const {data:result} = res
           _this.userInfo.nickName = result.user.nickName
           _this.userInfo.avatar = result.user.avatar
+          _this.msgcount = result.message
         })
         .catch(err =>{
           console.log(err)
@@ -327,7 +330,8 @@ export default {
     _this.getToken(_this)
     let token = localStorage.getItem('Authorization')
     if(token){
-      this.getStatus()
+      this.getStatus(),
+      this.msgcount=0;
     }
   }
 };
@@ -430,6 +434,27 @@ body {
             box-sizing: border-box;
             padding: 2px 5px;
             border-radius: 5px;
+          }
+          .message{
+            border: 1px #fff solid;
+            border-radius: 50%;
+            position: relative;
+            height: 40px;
+            width: 40px;
+            text-align: center;
+            i{
+              font-size: 18px;
+              color: #fff;
+            }
+            span{
+              font-size: 18px;
+              font-weight: bold;
+              color: blue;
+              vertical-align: 2px;
+              position: absolute;
+              top: -15px;
+
+            }
           }
         }
       }

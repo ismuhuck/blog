@@ -47,7 +47,7 @@ export default {
       vm.nameviews = query.type;
     });
   },
-  beforeRouteUpdate(to, from, next) {
+  beforeRouteUpdate(to, from, next) { 
     let name = to.query.type;
     this.nameviews = name;
     this.init();
