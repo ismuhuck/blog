@@ -12,10 +12,6 @@ import "bootstrap/dist/js/bootstrap.js";
 import "./assets/css/global.css"
 import "./assets/css/iconfont.css"
 
-// import "./css/font-awesome.min.css"
-// import "tinymce/skins"
-// import
-
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);

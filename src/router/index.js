@@ -45,11 +45,6 @@ const routes = [
   {
     path:'/search',
     component:Search,
-    // children:[
-    //   {path:'all',component:Searchall,name:'searchall'},
-    //   {path:'articles',component:Searcharticles,name:'searcharticles'},
-    //   {path:'user',component:Searchuser,name:'searchuser'}
-    // ]
     children:[
       {path:'',components:{
         all:Searchall,
@@ -78,13 +73,6 @@ const routes = [
       {path:'articlesList/:userId',component:ArticlesList,name:'home'}
     ]
   },
-  // 使用命名路由  动态传参
-  // {
-  //   path:'/home/:userId',component:Homepage,name:'home'
-  // },
-  // {
-  //   path:'/articlesInfo',name:"articlesInfo",component:ArticlesInfo
-  // },
   {
     path:'/personal',component:Personal,redirect:'/personal/articles',
     children:[

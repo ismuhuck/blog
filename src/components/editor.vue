@@ -1,12 +1,9 @@
 <template>
   <div>
-    <!-- {{ msg }} -->
-
     <div class="editBlog">
       <div class="reference">
-        <h4>请编写您的博文</h4>
-        <p>TinyMCE简介：TinyMCE是一款易用、且功能强大的所见即所得的富文本编辑器。并有多语言支持,支持word
-            文档的复制粘贴并保留其格式，并以html标签的字符串形式保存在数据库中。</p>
+        <h4>请编写您的文章内容</h4>
+        <p>本编辑器有多语言支持,并且您可以直接复制word中的内容，以原格式粘贴进来。</p>
       </div>
       <div class="blogTitle">
         <div class="label">
@@ -44,13 +41,9 @@ export default {
   methods: {
     // 鼠标单击的事件
     onClick() {
-      //   console.log("Element clicked");
-      //   console.log(e);
-      //   console.log(editor);
     },
     // 清空内容
-    clear() {
-      // console.log( this.$refs.editor);
+    clear() {+
       this.$refs.editor.clear();
     },
     createArticle(){
@@ -71,10 +64,7 @@ export default {
         data:{
           blogTitle:this.blogTitle,
           content:this.content
-        },
-        // headers:{
-        //   Authorization:token
-        // }
+        }
       }).then(res => {
         const {data:result} = res
         if(result.code===0){
