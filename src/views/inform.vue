@@ -34,7 +34,6 @@ export default {
         })
         .then(res => {
             const {data :result} = res
-            console.log(result)
             this.getinfo()
         })
         .catch(err => {
@@ -49,7 +48,7 @@ export default {
         .then(res => {
           const { data: result } = res;
           let count = result.message;
-          console.log(count,111)
+          // console.log(count,111)
           if (count === 0){
               this.flag = true
           }
@@ -69,7 +68,7 @@ export default {
         .then(res => {
           const { data: result } = res;
           this.messageList = result;
-          console.log(result)
+          // console.log(result)
         })
         .catch(err => {
           console.log(err);
@@ -88,6 +87,11 @@ export default {
   margin: 0 auto;
   background-color: rgb(245, 245, 245);
   padding: 20px;
+  .clear{
+    font-size: 18px;
+    border: 1px dashed gray;
+    padding: 5px 10px;
+  }
   .message{
       .list{
           margin: 0 0 20px 0;

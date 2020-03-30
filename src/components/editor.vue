@@ -16,10 +16,14 @@
       </div>
       <tinymce-editor ref="editor" v-model="content" :disabled="disabled" @onClick="onClick"></tinymce-editor>
       <div class="btnBox">
-        <button @click="clear" class="btn">清空内容</button>
+        <el-button  @click="clear" id="updateBtn">清空内容</el-button>
+        <el-button  @click="createArticle" id="updateBtn">发布文章</el-button>
+        <el-button  @click="disabled = true" id="updateBtn">禁用</el-button>
+        <el-button  @click="disabled = false" id="updateBtn">启用</el-button>
+        <!-- <button @click="clear" class="btn">清空内容</button>
         <button class="btn" @click="createArticle">发布文章</button>
         <button @click="disabled = true" class="btn">禁用</button>
-        <button @click="disabled = false" class="btn">启用</button>
+        <button @click="disabled = false" class="btn">启用</button> -->
       </div>
     </div>
   </div>
@@ -120,9 +124,13 @@ export default {
   .btnBox {
       margin-top: 20px;
       margin-left: 250px;
-    .btn {
-      border: 1px solid rgb(198, 55, 50);
-      margin-right: 20px;
+    #updateBtn {
+      color: rgb(27,161,252);
+    }
+    #updateBtn:hover{
+      color: rgb(207, 71, 66);
+      background-color: #fff;
+      border: 1px solid rgb(207, 71, 66);
     }
   }
 }

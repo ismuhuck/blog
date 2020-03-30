@@ -99,6 +99,9 @@ const routes = [
     path:'/inform',component:() =>import('../views/inform.vue')
   },
   {
+    path:'/error',component:() => import('../views/error.vue')
+  },
+  {
     path: '*',
     component:() => import('../views/notFound.vue')
   }
@@ -109,9 +112,15 @@ const router = new VueRouter({
   mode:'history'//vue默认使用hash 使用history模式会去掉url中的#
 });
 // 添加路由守卫
-const blackList = ['/editor','/personal/articles','/personal','/personal/focus','/personal/collecting','/personal/like','/personal/likeArticle','/edit/editInfo','/edit/edit_ava','/edit/edit_password']
+const blackList = ['/editor','/personal/articles','/personal','/personal/focus','/personal/collecting','/personal/like','/personal/likeArticle','/edit/editInfo','/edit/edit_ava','/edit/edit_password','/infrom']
 router.beforeEach((to,from, next) =>{
-  if(blackList.indexOf(to.path) !== -1){
+  if( blackList.indexOf(to.path) !== -1 && localStorage.getItem('statusCode')  == 3){
+    return next('/error')
+  }
+  // else if (from.path === '/error' && localStorage.getItem('statusCode') != 3){
+  //   next('/')
+  // }
+  else if(blackList.indexOf(to.path) !== -1){
     let token = localStorage.getItem('Authorization')
     if(token === null || token ===""){
       if(to.path === '/editor'){

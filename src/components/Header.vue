@@ -168,8 +168,6 @@ export default {
              { min: 6, max: 16, message: '密码长度为6-16位字符', trigger: 'blur' }
           ],
       },
-      userToken: "",
-      // isLogin: false,
       dropdown: false,
       isopacity: "0.5",
       register_dialog:false,
@@ -207,9 +205,10 @@ export default {
             this.getToken(this)
             this.$message.success('登录成功')
             this.login_dialog=false
+            this.getStatus(),
+            this.msgcount=0;
             }
             else if(result.code === 100){
-              console.log(result.msg)
               this.$message.error(result.msg)
             }
             else if(result.code ===200){
@@ -291,6 +290,7 @@ export default {
       let token = localStorage.getItem('Authorization')
       if(token){
         _this.userToken = token
+        this.getStatus()
         _this.axios({
           method: "get",
           url: "getUser",
@@ -310,6 +310,7 @@ export default {
     // 退出登录
     exitLogin(){
       localStorage.removeItem('Authorization')
+      localStorage.removeItem('statusCode')
       this.$router.push('/')
       var _this = this
       _this.getToken(_this)
@@ -319,6 +320,9 @@ export default {
       .then( res => {
         const {data:result} =res
         localStorage.setItem('statusCode',result.statusCode)
+        if(localStorage.getItem('statusCode') == 3){
+          this.$router.push('/error')
+        }
       })
       .catch(err => {
         console.log(err)
@@ -328,11 +332,6 @@ export default {
   created(){
     var _this = this
     _this.getToken(_this)
-    let token = localStorage.getItem('Authorization')
-    if(token){
-      this.getStatus(),
-      this.msgcount=0;
-    }
   }
 };
 </script>

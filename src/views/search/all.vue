@@ -22,7 +22,7 @@
       <div class="box" v-for="(item,index) in articleslist" :key="index">
         <div class="author">
           <img :src="item.avatar" alt />
-          <span class="nickName">猪八戒</span>
+          <span class="nickName">{{item.nickName}}</span>
           <span
             class="createTime"
           >{{formatTime("YYYY-mm-dd HH:MM",new Date(parseInt(item.createTime)))}}</span>

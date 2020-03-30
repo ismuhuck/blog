@@ -35,7 +35,6 @@
         </div>
         <div class="footer">
           <button class="Btn btn1" @click="focus">{{focusStatus}}</button>
-          <button class="Btn btn2">私信</button>
         </div>
       </div>
     </div>
@@ -261,14 +260,14 @@ export default {
           padding: 5px 0;
         }
         .btn1 {
-          border-right: none;
+          // border-right: none;
           border-top-left-radius: 3px;
           border-bottom-left-radius: 3px;
         }
-        .btn2 {
-          border-bottom-right-radius: 3px;
-          border-top-right-radius: 3px;
-        }
+        // .btn2 {
+        //   border-bottom-right-radius: 3px;
+        //   border-top-right-radius: 3px;
+        // }
       }
     }
   }

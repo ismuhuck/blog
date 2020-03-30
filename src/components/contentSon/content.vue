@@ -22,7 +22,7 @@
           </div>
           <div class="butt">
             <!-- <button class="btn btn1">加入社区</button> -->
-            <router-link to="/editor"><button class="btn btn2">发帖</button></router-link>
+            <router-link to="/editor"> <el-button id="updateBtn">发帖</el-button></router-link>
             
           </div>
         </div>
@@ -168,8 +168,13 @@ export default {
         .btn1 {
           margin-right: 10px;
         }
-        .btn2 {
-          margin-left: 10px;
+        #updateBtn {
+          color: rgb(27,161,252);
+       }
+        #updateBtn:hover{
+          color: rgb(207, 71, 66);
+          background-color: #fff;
+          border: 1px solid rgb(207, 71, 66);
         }
       }
     }

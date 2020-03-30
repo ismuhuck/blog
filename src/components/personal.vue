@@ -48,10 +48,10 @@
           <transition mode="out-in">
           <p class="downLike" v-if="likes" title="我的收藏" style="text-align:center;color:red;margin-bottom:0;height:176px;"><i @click="likes_show" class="icon iconfont icon-xin" style="font-size:20px;cursor:pointer;"><span style="font-size:14px; vertical-align: 2px;"> 点击查看更多</span></i></p>
           <ul v-else class="likes" style="margin-bottom:0">
-            <li><router-link to="/personal/focus"><i class="icon iconfont icon-guanzhu"></i> 我的关注</router-link> </li>
-            <li><router-link to="/personal/collecting"><i class="icon iconfont icon-shoucang"></i>我的收藏</router-link> </li>
-            <li><router-link to="/personal/like"><i class="icon iconfont icon-fensi"></i>我的粉丝</router-link> </li>
-            <li><router-link to="/personal/likeArticle"><i class="icon iconfont icon-z-like"></i>我点赞的</router-link> </li>
+            <li><router-link to="/personal/focus"><i class="icon iconfont icon-guanzhu" style="margin-right:10px"></i> 我的关注</router-link> </li>
+            <li><router-link to="/personal/collecting"><i class="icon iconfont icon-shoucang" style="margin-right:10px"></i>我的收藏</router-link> </li>
+            <li><router-link to="/personal/like"><i class="icon iconfont icon-fensi" style="margin-right:10px"></i>我的粉丝</router-link> </li>
+            <li><router-link to="/personal/likeArticle"><i class="icon iconfont icon-z-like" style="margin-right:10px" ></i>我点赞的</router-link> </li>
             <li style="text-align:center"><i @click="likes_show" class="icon iconfont icon-xin" style="font-size:20px;color:red;cursor:pointer;"></i></li>
           </ul>
           </transition>

@@ -87,7 +87,6 @@ export default {
       ).then(res => {
         const {data:result} = res
         this.list = result.article
-        console.log(result)
         
       })
     }
