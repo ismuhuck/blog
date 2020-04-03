@@ -53,7 +53,7 @@ export default {
       this.$refs.editor.clear();
     },
     createArticle(){
-      let status = localStorage.getItem('statusCode')
+      let status = sessionStorage.getItem('statusCode')
       if(status != 0){
         return this.$message.error('因为近期发表了不当言论，你已被禁言')
       }

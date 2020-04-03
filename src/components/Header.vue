@@ -199,7 +199,7 @@ export default {
             if(result.code===0){
             let userToken =''
             userToken = "Bearer " + res.data.token;
-            localStorage.setItem('Authorization',userToken)
+            sessionStorage.setItem('Authorization',userToken)
             // _this.changeLogin({ Authorization: this.userToken });
             // _this.isLogin = true
             this.getToken(this)
@@ -287,7 +287,7 @@ export default {
     },
           // 获取用户信息
     getToken(_this){
-      let token = localStorage.getItem('Authorization')
+      let token = sessionStorage.getItem('Authorization')
       if(token){
         _this.userToken = token
         this.getStatus()
@@ -309,8 +309,8 @@ export default {
     },
     // 退出登录
     exitLogin(){
-      localStorage.removeItem('Authorization')
-      localStorage.removeItem('statusCode')
+      sessionStorage.removeItem('Authorization')
+      sessionStorage.removeItem('statusCode')
       this.$router.push('/')
       var _this = this
       _this.getToken(_this)
@@ -319,8 +319,8 @@ export default {
       this.axios.get('getStatus')
       .then( res => {
         const {data:result} =res
-        localStorage.setItem('statusCode',result.statusCode)
-        if(localStorage.getItem('statusCode') == 3){
+        sessionStorage.setItem('statusCode',result.statusCode)
+        if(sessionStorage.getItem('statusCode') == 3){
           this.$router.push('/error')
         }
       })

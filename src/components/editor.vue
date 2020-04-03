@@ -51,8 +51,8 @@ export default {
       this.$refs.editor.clear();
     },
     createArticle(){
-      var token = localStorage.getItem('Authorization')
-      let status = localStorage.getItem('statusCode')
+      var token = sessionStorage.getItem('Authorization')
+      let status = sessionStorage.getItem('statusCode')
       if(!token){
         return this.$message.warning('您还未登录，请登录后发表');
       }

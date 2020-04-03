@@ -81,8 +81,8 @@ export default {
       replycomment: "",
       showitemId:'',
       placeholder:'',
-      token:localStorage.getItem('Authorization'),
-      statusCode:localStorage.getItem('statusCode')
+      token:sessionStorage.getItem('Authorization'),
+      statusCode:sessionStorage.getItem('statusCode')
     };
   },
   props: ["commentInfo"],
@@ -90,7 +90,7 @@ export default {
     formatTime:formatTime,
     // 发表评论
     commentText() {
-      let token = localStorage.getItem("Authorization");
+      let token = sessionStorage.getItem("Authorization");
       console.log(this.statusCode)
       if (!token) {
         return this.$message.error("您尚未登录，请登录后评论");

@@ -72,7 +72,7 @@ export default {
       likes:true,
       comment: "",
       text:'',
-      token:localStorage.getItem('Authorization'),
+      token:sessionStorage.getItem('Authorization'),
       user:{},
       likeme:0,
       focus:0,

@@ -30,7 +30,7 @@ export default {
       likeList: {},
       commentInfo: [],
       article: {},
-      token: localStorage.getItem("Authorization"),
+      token: sessionStorage.getItem("Authorization"),
       flag:false,
       active:'active',
       unactive:'unactive',

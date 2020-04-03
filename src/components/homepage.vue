@@ -54,7 +54,7 @@ export default {
       article:{},
       commentInfo:[],
       likeList:[],
-      token:localStorage.getItem('Authorization'),
+      token:sessionStorage.getItem('Authorization'),
       tanzhu:{},
       focusStatus:'关注'
     };

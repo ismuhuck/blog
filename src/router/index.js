@@ -114,14 +114,14 @@ const router = new VueRouter({
 // 添加路由守卫
 const blackList = ['/editor','/personal/articles','/personal','/personal/focus','/personal/collecting','/personal/like','/personal/likeArticle','/edit/editInfo','/edit/edit_ava','/edit/edit_password','/infrom']
 router.beforeEach((to,from, next) =>{
-  if( blackList.indexOf(to.path) !== -1 && localStorage.getItem('statusCode')  == 3){
+  if( blackList.indexOf(to.path) !== -1 && sessionStorage.getItem('statusCode')  == 3){
     return next('/error')
   }
-  // else if (from.path === '/error' && localStorage.getItem('statusCode') != 3){
+  // else if (from.path === '/error' && sessionStorage.getItem('statusCode') != 3){
   //   next('/')
   // }
   else if(blackList.indexOf(to.path) !== -1){
-    let token = localStorage.getItem('Authorization')
+    let token = sessionStorage.getItem('Authorization')
     if(token === null || token ===""){
       if(to.path === '/editor'){
         alert('登录后才能发表文章')

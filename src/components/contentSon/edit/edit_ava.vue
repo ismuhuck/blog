@@ -33,7 +33,7 @@ export default {
       return {
         imageUrl: '',
         token:{
-          Authorization:localStorage.getItem('Authorization')
+          Authorization:sessionStorage.getItem('Authorization')
         }
       };
     },

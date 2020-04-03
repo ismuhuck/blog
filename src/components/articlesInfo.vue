@@ -29,7 +29,7 @@ export default {
       likeList:[],
       comment: "",
       text:'',
-      token:localStorage.getItem('Authorization'),
+      token:sessionStorage.getItem('Authorization'),
     };
   },
   components:{
@@ -106,7 +106,7 @@ export default {
 
     // 发表评论
     commentText(){
-      let token = localStorage.getItem('Authorization')
+      let token = sessionStorage.getItem('Authorization')
       if(!token){
         return this.$message.error('您尚未登录，请登录后评论')
       }
